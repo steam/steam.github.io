@@ -2,24 +2,28 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://steam.github.io/blog/2013/05/22/ios-data-security/</loc>
-        <lastmod>2014-05-17T14:32:53-06:00</lastmod>
+        <lastmod>2014-05-18T09:25:00-06:00</lastmod>
     </url>
     <url>
         <loc>
             http://steam.github.io/blog/2014/05/17/android-vs-ios-from-an-ios-developers-perspective/
         </loc>
-        <lastmod>2014-05-17T23:11:31-06:00</lastmod>
+        <lastmod>2014-05-18T09:25:00-06:00</lastmod>
     </url>
     <url>
         <loc>http://steam.github.io/blog/archives/</loc>
-        <lastmod>2014-05-17T23:11:31-06:00</lastmod>
+        <lastmod>2014-05-18T09:25:00-06:00</lastmod>
     </url>
     <url>
         <loc>http://steam.github.io/</loc>
-        <lastmod>2014-05-17T23:11:31-06:00</lastmod>
+        <lastmod>2014-05-18T09:25:00-06:00</lastmod>
     </url>
     <url>
         <loc>http://steam.github.io/robots.txt</loc>
-        <lastmod>2014-05-17T14:32:53-06:00</lastmod>
+        <lastmod>2014-05-18T08:55:02-06:00</lastmod>
+    </url>
+    <url>
+        <loc>http://steam.github.io/search.html</loc>
+        <lastmod>2014-05-18T09:25:00-06:00</lastmod>
     </url>
 </urlset>
