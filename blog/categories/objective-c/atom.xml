@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Objective-C | Sean Dougherty]]></title>
+  <link href="http://steam.github.io/blog/categories/objective-c/atom.xml" rel="self"/>
+  <link href="http://steam.github.io/"/>
+  <updated>2014-05-31T14:12:55-06:00</updated>
+  <id>http://steam.github.io/</id>
+  <author>
+    <name><![CDATA[Sean Dougherty]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Dependency Injection for Objective-C]]></title>
+    <link href="http://steam.github.io/blog/2014/05/28/dependency-injection-for-objective-c/"/>
+    <updated>2014-05-28T23:01:00-06:00</updated>
+    <id>http://steam.github.io/blog/2014/05/28/dependency-injection-for-objective-c</id>
+    <content type="html"><![CDATA[<p>Despite what some <a href="http://david.heinemeierhansson.com/2014/tdd-is-dead-long-live-testing.html">people</a> think, TDD is alive and well. Fast running tests are awesome and breaking dependencies is the key to fast, isolated unit tests. Reliable tests give us the confidence to aggressively clean our code and add new features.</p>
+
+<p>In iOS and OS X it is common to use singleton or singleton style service objects for app wide functionality. Apple provides several of these singleton service objects that are used in most applications. <code>[NSUserDefaults standardUserDefaults];</code> and <code>[NSNotificationCenter defaultCenter];</code> for example.</p>
+
+<p>Both <code>NSUserDefaults</code> and <code>NSNotificationCenter</code> are notoriously painful to isolate in unit tests. <code>NSUserDefaults</code> is challenging because it writes to disk and has the potential of poluting the real running application after the test suite has run and we are back to using the app in the simulator. <code>NSNotificationCenter</code> introduces the possibility of test pollution due to it&rsquo;s global nature. Wouldn&rsquo;t it be nice if we had a system to seemlessly inject fake versions of these in our tests?</p>
+
+<p>We do.</p>
+
+<p>At <a href="http://www.gospotcheck.com">GoSpotCheck</a> we have a mechanism for injecting all of Apple&rsquo;s as well as all of our own singleton style dependencies. When running in the simulator or on a device the real service objects are injected. When the test target is running fake service objects are injected.</p>
+
+<p>The rest of this post will detail out our approach to dependency injection. To keep things easy to understand the example is intentionally simplistic. The sample project <a href="https://github.com/steam/injections">Injections</a> is not organized like our production application and the test suite is XCTest in order to reduce the amount of setup needed to try it out. We use <a href="https://github.com/pivotal/cedar">Cedar</a> and <a href="https://github.com/specta/expecta">Expecta</a> at GoSpotCheck.</p>
+
+<p>The example below shows how to dependency inject a fake <code>AFNetworkReachabilityManager</code> from <a href="https://twitter.com/mattt">Mattt Thompson&rsquo;s</a> fantastic <a href="https://github.com/AFNetworking/AFNetworking">AFNetworking</a> library. AFNetworking is a great network request library for iOS and OS X.</p>
+
+<p><code>AFNetworkReachabilityManager</code> provides hooks for checking on, and being notified of a device&rsquo;s internet connectivity. To unit test online/offline conditional behavior in an app we need to be able control (or fake) the <code>AFNetworkReachabilityManager's</code> reported connection status. This example may seem like a lot of code is required to fake the connection status. That using a mocking framework like <a href="http://ocmock.org/">OCMock</a> might be simpler. It would be. For one off stubbing and mocking OCMock is great. However, in a large production application fakes are usually a better choice in my opinion. Application state is more straightforward with a system of injected fakes than one off mocking, especially for system wide service objects. These techniques are especially useful when unit testing true service objects that make network requests and return deserialized model objects.</p>
+
+<p>Injections is a simple application that displays the device&rsquo;s connection status when launched. Follow the setup below to see it in action.</p>
+
+<p><img src="/images/injections.jpg"></p>
+
+<h2>Setup</h2>
+
+<p>```
+$ git clone git@github.com:steam/injections.git</p>
+
+<p>```</p>
+
+<p>We&rsquo;ll be looking at a handful of classes and categories.</p>
+
+<p><code>Environment</code> is the class that initializes all the services. In a real application you&rsquo;d see properties for a <code>NSNotificationCenter</code>, <code>NSUserDefaults</code> and all other singleton style service objects here. These will be referenced by the <code>UIViewController+Injections</code> category and made available to all <code>UIViewControllers</code> that want access.</p>
+
+<p>``` objective-c Environment.h</p>
+
+<h1>import &lt;Foundation/Foundation.h></h1>
+
+<p>@class AFNetworkReachabilityManager;</p>
+
+<p>@interface Environment : NSObject</p>
+
+<p>@property (strong, nonatomic, readonly) AFNetworkReachabilityManager *reachabilityManager;</p>
+
+<ul>
+<li>(Environment *)singleton;</li>
+<li>(BOOL)isTestEnvironment;</li>
+</ul>
+
+
+<p>@end
+```</p>
+
+<p>The key part to take note of is <code>-initializeServices</code>. We call <code>[self isTestEnvironment]</code> to determine if we are in the test environment. If <code>- (BOOL)isTestEnvironment</code> returns true then we initialize fake services, otherwise we initialize the real <code>reachabilityManager</code>.</p>
+
+<p>``` objective-c Environment.m
+&hellip;
+&ndash; (void)initializeServices
+{</p>
+
+<pre><code>if ([self isTestEnvironment])
+{
+    [self performSelector:@selector(initializeFakeServices)];
+    return;
+}
+
+self.reachabilityManager = [AFNetworkReachabilityManager sharedManager];
+</code></pre>
+
+<p>}</p>
+
+<ul>
+<li>(BOOL)isTestEnvironment {
+  return [self respondsToSelector:@selector(initializeFakeServices)];
+}
+&hellip;
+```</li>
+</ul>
+
+
+<p>The magic happens with <code>[self respondsToSelector:@selector(initializeFakeServices)]</code>. In the non-test target this will return false. In the test target it will return true because of the <code>Environment+Fake</code> category imported in <code>ViewControllerTests.m</code>.</p>
+
+<p>``` objective-c Environment+Fake.m</p>
+
+<h1>import &ldquo;Environment+Fake.h&rdquo;</h1>
+
+<h1>import &ldquo;FakeReachabilityManager.h&rdquo;</h1>
+
+<p>@implementation Environment (Fake)</p>
+
+<ul>
+<li>(void)initializeFakeServices
+{
+  [self setValue:[FakeReachabilityManager sharedManager] forKey:@&ldquo;reachabilityManager&rdquo;];
+}</li>
+</ul>
+
+
+<p>@end
+```</p>
+
+<p><code>Environment+Fake</code> sets <code>[FakeReachabilityManager sharedManager]</code> as the value for <code>self.reachabilityManager</code>. We&rsquo;ll see below that <code>ViewController</code> will use the fake version of <code>self.reachabilityManager</code> in the test target while using the real <code>reachabilityManager</code> in the non-test target.</p>
+
+<p>The <code>UIViewController+Injections</code> category is in charge of defining methods that returns each of the services we want to expose to our view controllers. In this case <code>reachabilityManager</code> is returned from the <code>Environment</code> singleton object. This method will return either the real or fake version of the <code>reachabilityManager</code> depending on the target.</p>
+
+<p>```objective-c UIViewController+Injections.m</p>
+
+<p>@implementation UIViewController (Injections)</p>
+
+<ul>
+<li>(AFNetworkReachabilityManager *)reachabilityManager
+{
+  return [Environment singleton].reachabilityManager;
+}</li>
+</ul>
+
+
+<p>@end
+```</p>
+
+<p><code>ViewController</code> uses the <code>reachabilityManager</code> to determine what text to display to the user. If <code>self.reachabilityManger.networkReachabilityStatus</code> is reachable the label&rsquo;s text is set to &ldquo;online&rdquo;, if not then it is set to &ldquo;offline&rdquo;. Take note of the <code>@property (strong, nonatomic) AFNetworkReachabilityManager *reachabilityManager;</code> declaration in the header as well as it&rsquo;s corresponding <code>@dynamic reachabilityManager;</code> in the implementation file. All <code>UIViewController</code> subclasses have access to the <code>UIViewController+Injections</code> category methods which allows them to be set as properties on each <code>ViewController</code> subclass and dynamically evaluated at runtime.</p>
+
+<p>```objective-c ViewController.h</p>
+
+<h1>import &lt;UIKit/UIKit.h></h1>
+
+<p>@class AFNetworkReachabilityManager;</p>
+
+<p>@interface ViewController : UIViewController</p>
+
+<p>@property (nonatomic, weak) IBOutlet UILabel *internetStatusLabel;</p>
+
+<p>/<em> &ldquo;Injected&rdquo; properties &mdash; Each should have a corresponding @dynamic directive </em>/
+@property (strong, nonatomic) AFNetworkReachabilityManager *reachabilityManager;</p>
+
+<p>@end
+```</p>
+
+<p>```objective-c ViewController.m</p>
+
+<h1>import &ldquo;ViewController.h&rdquo;</h1>
+
+<h1>import &lt;AFNetworking/AFNetworkReachabilityManager.h></h1>
+
+<p>@implementation ViewController</p>
+
+<p>@dynamic reachabilityManager;</p>
+
+<ul>
+<li><p>(void)viewDidLoad
+{
+  [super viewDidLoad];
+  [self displayOnlineStatus];
+}</p></li>
+<li><p>(void)displayOnlineStatus
+{
+  BOOL reachable = self.reachabilityManager.networkReachabilityStatus != AFNetworkReachabilityStatusNotReachable;</p>
+
+<p>  if (reachable)
+  {
+      self.internetStatusLabel.text = NSLocalizedString(@&ldquo;online&rdquo;, nil);
+  }
+  else
+  {
+      self.internetStatusLabel.text = NSLocalizedString(@&ldquo;offline&rdquo;, nil);
+  }
+}</p></li>
+</ul>
+
+
+<p>@end
+```</p>
+
+<p>The final two pieces of the puzzle are in our test suite. <code>ViewControllerTests.m</code> and <code>FakeReachabilityManager</code> take care of the rest.</p>
+
+<p>First, <code>FakeReachabilityManager</code> provides access to toggling the reported connection status as online or offline.</p>
+
+<p>```objective-c FakeReachabilityManager.h</p>
+
+<h1>import &ldquo;AFNetworkReachabilityManager.h&rdquo;</h1>
+
+<p>@interface FakeReachabilityManager : AFNetworkReachabilityManager</p>
+
+<ul>
+<li>(void)setOffline;</li>
+<li>(void)setOnline;</li>
+</ul>
+
+
+<p>@end
+```</p>
+
+<p>By calling <code>-setOffline</code> or <code>-setOnline</code> we&rsquo;re able to override <code>- (AFNetworkReachabilityStatus)networkReachabilityStatus</code> having it return the value of <code>self.fakeStatus</code> set in the <code>-setOffline</code> or <code>-setOnline</code> calls.</p>
+
+<p>```objective-c FakeReachabilityManager.m</p>
+
+<p>@interface FakeReachabilityManager()
+@property (nonatomic, assign) AFNetworkReachabilityStatus fakeStatus;
+@end</p>
+
+<p>@implementation FakeReachabilityManager</p>
+
+<ul>
+<li><p>(void)setOffline
+{
+  self.fakeStatus = AFNetworkReachabilityStatusNotReachable;
+}</p></li>
+<li><p>(void)setOnline
+{
+  self.fakeStatus = AFNetworkReachabilityStatusReachableViaWWAN;
+}</p></li>
+<li><p>(AFNetworkReachabilityStatus)networkReachabilityStatus
+{
+  return self.fakeStatus;
+}</p></li>
+</ul>
+
+
+<p>@end
+```</p>
+
+<p>Finally, we make use of our <code>FakeReachabilityManager</code> in <code>ViewControllerTests.m</code>.</p>
+
+<p>```objective-c ViewControllerTests.m</p>
+
+<h1>import &lt;XCTest/XCTest.h></h1>
+
+<h1>import &ldquo;Environment+Fake.h&rdquo;</h1>
+
+<h1>import &ldquo;ViewController.h&rdquo;</h1>
+
+<h1>import &ldquo;FakeReachabilityManager.h&rdquo;</h1>
+
+<p>@interface ViewControllerTests : XCTestCase</p>
+
+<p>@property (nonatomic, strong) ViewController *controller;</p>
+
+<p>@end</p>
+
+<p>@implementation ViewControllerTests</p>
+
+<ul>
+<li><p>(void)setUp
+{
+  [super setUp];
+  UIStoryboard <em>storyboard = [UIStoryboard storyboardWithName:@&ldquo;Main&rdquo; bundle:nil];
+  self.controller = (ViewController </em>)[storyboard instantiateInitialViewController];
+  [self.controller loadView];
+}</p></li>
+<li><p>(void)tearDown
+{
+  [super tearDown];
+}</p></li>
+<li><p>(void)testOnlineLabelDisplaysOfflineWhenOffline
+{
+  FakeReachabilityManager <em>manager = (FakeReachabilityManager </em>)self.controller.reachabilityManager;
+  [manager setOffline];</p>
+
+<p>  [self.controller viewDidLoad];</p>
+
+<p>  NSString <em>expectedResult = @&ldquo;offline&rdquo;;
+  NSString </em>text = self.controller.internetStatusLabel.text;</p>
+
+<p>  XCTAssertTrue([text isEqualToString:expectedResult], @&ldquo;Strings are not equal %@ %@&rdquo;, text, expectedResult);
+}</p></li>
+<li><p>(void)testOnlineLabelDisplaysOnlineWhenOnline
+{
+  FakeReachabilityManager <em>manager = (FakeReachabilityManager </em>)self.controller.reachabilityManager;
+  [manager setOnline];</p>
+
+<p>  [self.controller viewDidLoad];</p>
+
+<p>  NSString <em>expectedResult = @&ldquo;online&rdquo;;
+  NSString </em>text = self.controller.internetStatusLabel.text;</p>
+
+<p>  XCTAssertTrue([text isEqualToString:expectedResult], @&ldquo;Strings are not equal %@ %@&rdquo;, text, expectedResult);
+}</p></li>
+</ul>
+
+
+<p>@end
+```</p>
+
+<p>By toggling our <code>reachabilityManager's</code> online status through the fake we are able to write assertions about the label&rsquo;s text for both online and offline states.</p>
+
+<h2>Summary</h2>
+
+<ul>
+<li><code>Environment</code> handles the setup of service objects.</li>
+<li><code>Environment+Fake</code> sets fake services in the test target.</li>
+<li><code>UIViewController+Injections</code> provides service access to <code>UIViewControllers</code>.</li>
+<li><code>@dynamic</code> accessors makes this possible.</li>
+<li><code>ViewControllerTests.m</code> is able to use the fake service object and control the external dependency.</li>
+</ul>
+
+
+<p>As I mentioned above, this example feels like overkill for this particular use case due to the simplicity of the app. In practice however this technique makes it possible to have fine grain control over a host of complicated services and objects. When your app has hundreds of classes and thousands of tests you&rsquo;ll see your hard work paid back many times over. The tests will run fast and predictably (our current test suite takes under 15 seconds to run ~1400 tests). TDD and near complete test coverage can only happen when you have confidence in the test suite and you can execute them fast enough to do it often. Breaking dependencies on asynchronous code and hard to control state is crucial.</p>
+
+<p>Approach this in a different way? Completely disagree? Love the technique? Reach out and let me know on twitter <a href="https://twitter.com/sdougherty">@sdougherty</a>.</p>
+]]></content>
+  </entry>
+  
+</feed>
