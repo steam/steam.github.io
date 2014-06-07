@@ -1,0 +1,399 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>WWDC 2014 - Sean Dougherty</title>
+  <meta name="author" content="Sean Dougherty">
+
+  
+  <meta name="description" content="Apple&rsquo;s annual World Wide Developers Conference was held in San Francisco over the past week. It turns out that 2014 was a great year for first &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://steam.github.io/blog/2014/06/05/wwdc-2014">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Sean Dougherty" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Noto+Serif:400,700' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-40996992-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Sean Dougherty</a></h1>
+  
+    <h2>Some thoughts about mobile software development (mostly).</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  
+  
+</ul>
+
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">WWDC 2014</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-05T16:58:00-05:00" pubdate data-updated="true">Jun 5<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Apple&rsquo;s annual World Wide Developers Conference was held in San Francisco over the past week. It turns out that 2014 was a great year for first time attendees like myself and my fellow iOS developer co-worker David Nix <a href="https://twitter.com/dave_nix">@dave_nix</a>. GoSpotCheck was lucky enough to get two tickets in the Apple lottery (at a pretty price of $1600 each) and graciously sent David and I to soak up all the new Apple goodness. Between the two of us we were able to attend a wide range of sessions and events. This post is a team effort. We have taken the time to compare notes and put together what we feel are the key takeaways from WWDC 2014.</p>
+
+<h2>Developers! Developers! Developers!</h2>
+
+<p>If WWDC 2013 was all about users, 2014 was all about developers. While iOS 8 and OS X 10.10 have lots of great new features for end users these pale in comparison to the sheer volume of new and improved tools Apple made available to their millions of iOS and Mac developers. The general opinion we heard around Moscone was excitement and approval. We couldn&rsquo;t agree more.</p>
+
+<h2>Big takeaways</h2>
+
+<ul>
+<li>This was the biggest WWDC for developers since 2008 (the introduction of the App Store for the iPhone 3G).</li>
+<li>Swift is available in iOS 7 or greater so supporting iOS 6 is a no go. <strong>Hint: We really want to use Swift.</strong></li>
+</ul>
+
+
+<h4>A little taste of the goodness</h4>
+
+<p>Lets loop through the range of 1&hellip;5 inclusive and print out some calculations on index</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="k">for</span> <span class="n">index</span> <span class="k">in</span> <span class="mf">1.</span><span class="p">.</span><span class="mf">.5</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">println</span><span class="p">(</span><span class="s">&quot;\(index) times 5 is \(index * 5)&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Replace indexes 2, 3 and 4 in our friends array</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">friends</span><span class="p">[</span><span class="mf">2.</span><span class="p">.</span><span class="mf">.4</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;John&quot;</span><span class="p">,</span> <span class="s">&quot;Anna&quot;</span><span class="p">,</span> <span class="s">&quot;Henry&quot;</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Use a tuple to return multiple ages of our friends</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">func</span> <span class="nf">getAges</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">Int</span><span class="p">,</span> <span class="n">Int</span><span class="p">,</span> <span class="n">Int</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">(</span><span class="mi">28</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="n">let</span> <span class="p">(</span><span class="n">johnAge</span><span class="p">,</span> <span class="n">annaAge</span><span class="p">,</span> <span class="n">henryAge</span><span class="p">)</span> <span class="o">=</span> <span class="n">getAges</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is just a small taste of the compactness and expressiveness built into Swift. For a more detailed look into the language download &ldquo;The Swift Programming Language&rdquo; in iBooks.</p>
+
+<ul>
+<li>The new debugging features in Xcode are amazing.</li>
+<li>Swift plays well with ObjC (and vice versa). An incredible feat by Apple.</li>
+<li>Apple hates the &ldquo;hamburger&rdquo; menu, and we agree with them.</li>
+<li>Remember, everything really cool in iOS 8 will (probably) not be usable with iOS 7.</li>
+<li>Testflight will be integrated. No more device ids needed! Just apple ids. (It’s based on per user, not on per device.)</li>
+<li>No more calculating tableview cell heights or collectionview cell sizes! (iOS 8 only though)</li>
+<li>A lot of the new iOS 8 user-facing features are already present in Android. Whether or not Apple does this better than Android remains to be seen.</li>
+<li>Xcode playgrounds are incredible. Totally changes the way we code in Swift (for the better). It&rsquo;s like irb or pry on steroids.</li>
+<li>Apple is pushing for more interactive UI (think Facebook&rsquo;s Paper).</li>
+<li>A big theme at the conference was adaptability. It is clear Apple is planning for more devices and potential screen dimensions. A lot of the new UIKit APIs are geared towards making application user interfaces work at any size. Becuase of this many of the explict references to iPad, iPhone and specific device orientations (portrait or landscape) are disappearing from the language. In their place are adaptive concepts that aim to communicate relative size such as &lsquo;regular height&rsquo; or &lsquo;compact width&rsquo;. They&rsquo;ve put a tremndous amount of effort into making adaptive layouts easier to create.</li>
+<li>Continuity is anothe concept Apple reiterated. Allowing users to move from device to device picking up where they left off is going to set high quality apps apart.</li>
+<li>Prototyping, or making <em>fake</em> apps is a crucial step in the process. Start with the most disposable possible version of an app idea. Use a pen and paper. Come up with lots of ideas. <strong>Throw most of them away.</strong> Build static, image based versions of the ones that seem promising. Show them to real users. <strong>Throw most of them away.</strong> Don&rsquo;t start building a time intensive <strong>real</strong> app until you have feedback on the fake app from real users. Hopefully this results in a better app, that real users want, with much less effort.</li>
+</ul>
+
+
+<h2>Opinion</h2>
+
+<p>We&rsquo;re curious to see how fast Swift is compared to Objective C. Part of the joy of ObjC is that, even though it is verbose and &ldquo;ugly&rdquo;, you typically never have to worry about performance. It is very fast. It was stupid of Apple to compare Swift to Python in the main keynote. Python is an interpreted language, Swift is compiled. It&rsquo;s like comparing apples to oranges (pun intended). But Apple did have slides saying Swift is faster than ObjC. However, I (David) read an article, which I can&rsquo;t find now of course, that benchmarked Swift vs ObjC. The article claimed Swift was slower, sometimes by 200x or more. The author was doing things that probably wouldn&rsquo;t come up in most production apps (i.e. sorting millions of objects). However, only time will tell to see if Swift keeps on par with ObjC.</p>
+
+<p>Swift combined with Xcode&rsquo;s new debugging features is going to boost programmer productivity significantly. It will give us more time to work on polished (nice to have) features like custom animations or custom UI.</p>
+
+<p>ObjC won&rsquo;t be going anywhere for a while, but we might as well consider it legacy code. Swift is so much nicer to write. We can see Apple dropping ObjC in the next couple years. They often take an adapt or die methodology.</p>
+
+<p>Several sessions dealt with user interfaces and how to approach designing them, both visual design and information design. Apple continuously reinforced the importance of <strong>clear</strong>, <strong>simple</strong> and <strong>focused</strong> design. An example of poor design, in Apple&rsquo;s opinion, is the hamburger button. Hamburger buttons interfere with the navigation back arrow, confusing the user. They also open drawers which tend to collect junk just like real drawers. Apple highly recommends tab bars instead of hamburger buttons. Even though tab bars take up screen real estate they greatly increase clarity and tend to get used much more often than hidden hamburger button navigation. We agree that hamburger buttons should go away in most cases.</p>
+
+<p>Mature apps will need to be adaptive. This means having the appropriate content and sizing of that content at all size classes. This also means making our apps handle Adaptive Type, a system wide, user configured setting that dynamically changes the size of type throughout all apps.</p>
+
+<h2>Technical Thoughts (targeted for programmers)</h2>
+
+<p>Swift has no concept of public/private/protected. It will be the developer&rsquo;s job to clearly mark methods as public (via a comment) and to only use those methods publicly. However, Apple said access control will be coming to Swift in the future.</p>
+
+<p>The ObjC feature of sending a message to nil and nothing happens has been great for the user in preventing crashes, but tough for the programmer when debugging during development. Swift does not have this feature. At first, we were scared this would lead to &ldquo;NullPointerExceptions&rdquo; that are common in Java. However, Swift uses Optional types to address this issue. An optional tells the compiler that a variable may or may not have a value. The compiler, then, is very strict about how you use these values. It also forces you to initialize every variable. You cannot initialize a non-optional variable to nil.</p>
+
+<p>Swift has features very friendly to functional programming. We think we&rsquo;ll see more and more functional programming paradigms in iOS as time goes on.</p>
+
+<p>Another quick taste of the functional power of Swift.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="c1">// this is not possible in Objective-C</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">numbers</span><span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">number</span> <span class="k">in</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">number</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// but we can do better, we can shorten it even more</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">numbers</span><span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">$0</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Our summary of the announcements and sessions at WWDC 2014 would be incomplete without a list of highlights. Below are a few of the more significant changes to the tooling, API and end user facing components of iOS and OS X apps.</p>
+
+<h2>Tooling Highlights</h2>
+
+<ul>
+<li><strong>Swift</strong> &ndash; a completely new programming language for writing iOS and OS X apps</li>
+<li><strong>Swift REPL</strong> &ndash; a command line interactive shell for running Swift code (similar to irb for ruby)</li>
+<li><strong>Playgrounds</strong> &ndash; realtime environments for trying out code</li>
+<li><strong>View Debugging</strong> &ndash; visual debugging of views and their layout constraints</li>
+<li><strong>Universal Storyboards</strong> &ndash; a single storyboard for all screen sizes</li>
+<li><strong>Resizable Simulator</strong> &ndash; the iOS simulator can be resized to any size</li>
+</ul>
+
+
+<h2>API Highlights</h2>
+
+<ul>
+<li><strong>App Extensions</strong> &ndash; iOS system wide widgets accessible from other apps</li>
+<li><strong>UITableView &amp; UICollectionView</strong> &ndash; automatic calculation of table and collection cell size</li>
+<li><strong>Size Classes &amp; Trait Collections</strong> &ndash; device &amp; orientation independent handling of user interface size changes</li>
+<li><strong>Rotation API deprecation</strong> &ndash; rotation events are deprecated, replaced by size classes</li>
+<li><strong>CloudKit</strong> &ndash; structured, cloud based storage in iCloud</li>
+<li><strong>SceneKit</strong> &ndash; simple 3D engine now available in iOS</li>
+<li><strong>TouchID</strong> &ndash; applications can now access authentication through TouchID on iPhone 5s</li>
+<li><strong>UIAlertController</strong> &ndash; Alert views and Action sheets are now full blown view controllers</li>
+<li><strong>UISplitViewController</strong> &ndash; now availble on iPhone, one uniform controller for handling master/detail content</li>
+<li><strong>HealthKit</strong> &ndash; a framework for managing personal health information</li>
+<li><strong>HomeKit</strong> &ndash; a framework for communicating between home automation devices</li>
+</ul>
+
+
+<h2>End User Highlights</h2>
+
+<ul>
+<li><strong>iMessage</strong> &ndash; SMS is supported in all iMessage conversations</li>
+<li><strong>Handoff</strong> &ndash; users can start an activity on one device and seemlessly transition it to another device</li>
+<li><strong>iCloud storage</strong> &ndash; larger buckets of iCloud data can be purchased</li>
+<li><strong>Document Picker</strong> &ndash; 3rd party cloud storage providers can offer access to all applications</li>
+</ul>
+
+
+<p>Disagree? Did we miss something? You can reach us both on twitter <a href="https://twitter.com/dave_nix">@dave_nix</a> or <a href="https://twitter.com/sdougherty">@sdougherty</a>. We&rsquo;d love to hear from you.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Sean Dougherty</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-05T16:58:00-05:00" pubdate data-updated="true">Jun 5<span>th</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://steam.github.io/blog/2014/06/05/wwdc-2014/" data-via="sdougherty" data-counturl="http://steam.github.io/blog/2014/06/05/wwdc-2014/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/05/28/dependency-injection-for-objective-c/" title="Previous Post: Dependency Injection for Objective-C">&laquo; Dependency Injection for Objective-C</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+  <aside class="sidebar">
+   
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:steam.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+  
+    <section>
+  <h1>About Me</h1>
+  <p>I am a mobile software engineer living in Denver Colorado. I spend my time writing code, mostly objective-c, hanging out with my 3 boys, injuring myself while running and playing drums.</p>
+	<p>I currently work with the great team at <a href="http://www.gospotcheck.com">GoSpotCheck</a>. I also run a software development consultancy, <a href="http://www.process255.com">process255.com</a> and an iOS app product company <a href="http://www.simpletomato.com">simpletomato.com</a></p>
+</section>
+
+<section>
+  <div>
+    <p><br /><a href="http://twitter.com/sdougherty">My Tweets, on Twitter.</a></p>
+    <a href="http://twitter.com/sdougherty" class="twitter-follow-button" data-show-count="">Follow @sdougherty</a>
+  </div>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/06/05/wwdc-2014/">WWDC 2014</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/05/28/dependency-injection-for-objective-c/">Dependency Injection for Objective-C</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/05/17/android-vs-ios-from-an-ios-developers-perspective/">Android vs iOS From an iOS Developer's Perspective</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/05/22/ios-data-security/">iOS Data Security</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Sean Dougherty -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+<script>
+  $(document).ready(function() {  
+  var stickyNavTop = $('nav').offset().top;  
+    
+  var stickyNav = function(){  
+  var scrollTop = $(window).scrollTop();  
+         
+  if (scrollTop > stickyNavTop) {   
+      $('nav').addClass('sticky');  
+  } else {  
+      $('nav').removeClass('sticky');   
+  }  
+  };  
+    
+  stickyNav();  
+    
+  $(window).scroll(function() {  
+      stickyNav();  
+  });  
+  });  
+</script>
+
+
+</body>
+</html>

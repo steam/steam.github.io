@@ -4,7 +4,7 @@
   <title><![CDATA[Category: iOS, | Sean Dougherty]]></title>
   <link href="http://steam.github.io/blog/categories/ios/atom.xml" rel="self"/>
   <link href="http://steam.github.io/"/>
-  <updated>2014-05-31T14:12:55-06:00</updated>
+  <updated>2014-06-07T13:21:38-05:00</updated>
   <id>http://steam.github.io/</id>
   <author>
     <name><![CDATA[Sean Dougherty]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Dependency Injection for Objective-C]]></title>
     <link href="http://steam.github.io/blog/2014/05/28/dependency-injection-for-objective-c/"/>
-    <updated>2014-05-28T23:01:00-06:00</updated>
+    <updated>2014-05-28T23:01:00-05:00</updated>
     <id>http://steam.github.io/blog/2014/05/28/dependency-injection-for-objective-c</id>
     <content type="html"><![CDATA[<p>Despite what some <a href="http://david.heinemeierhansson.com/2014/tdd-is-dead-long-live-testing.html">people</a> think, TDD is alive and well. Fast running tests are awesome and breaking dependencies is the key to fast, isolated unit tests. Reliable tests give us the confidence to aggressively clean our code and add new features.</p>
 
@@ -36,7 +36,7 @@
 
 <p>Injections is a simple application that displays the device&rsquo;s connection status when launched. Follow the setup below to see it in action.</p>
 
-<p><img src="/images/injections.jpg"></p>
+<p>{% img /images/injections.jpg %}</p>
 
 <h2>Setup</h2>
 
