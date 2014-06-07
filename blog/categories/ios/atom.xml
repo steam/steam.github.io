@@ -4,7 +4,7 @@
   <title><![CDATA[Category: iOS, | Sean Dougherty]]></title>
   <link href="http://steam.github.io/blog/categories/ios/atom.xml" rel="self"/>
   <link href="http://steam.github.io/"/>
-  <updated>2014-06-07T13:21:50-05:00</updated>
+  <updated>2014-06-07T13:34:00-05:00</updated>
   <id>http://steam.github.io/</id>
   <author>
     <name><![CDATA[Sean Dougherty]]></name>
@@ -36,7 +36,7 @@
 
 <p>Injections is a simple application that displays the device&rsquo;s connection status when launched. Follow the setup below to see it in action.</p>
 
-<p>{% img /images/injections.jpg %}</p>
+<p><img src="/images/injections.jpg"></p>
 
 <h2>Setup</h2>
 
