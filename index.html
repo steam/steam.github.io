@@ -9,7 +9,7 @@
   <meta name="author" content="Sean Dougherty">
 
   
-  <meta name="description" content="Apple&rsquo;s annual World Wide Developers Conference was held in San Francisco over the past week. It turns out that 2014 was a great year for first &hellip;">
+  <meta name="description" content="This year was a big year for developers on Apple&rsquo;s platforms. Apple announced a ton of great stuff at WWDC. The most exciting news was their &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -76,6 +76,665 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2014/06/17/swift/">Swift</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-17T08:12:00-06:00" pubdate data-updated="true">Jun 17<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This year was a big year for developers on Apple&rsquo;s platforms. Apple announced a ton of great stuff at <a href="/blog/2014/06/05/wwdc-2014">WWDC</a>. The most exciting news was their announcement of a new programming language, <a href="https://developer.apple.com/swift/">Swift</a>.</p>
+
+<p>According to Apple&rsquo;s free to download book <a href="https://itun.es/us/jEUH0.l"><strong><em>The Swift Programming Language</em></strong></a></p>
+
+<blockquote><p>&ldquo;Swift is a new programming language for iOS and OS X apps that builds on the best of C and Objective-C, without the constraints of C compatibility. Swift adopts safe programming patterns and adds modern features to make programming easier, more flexible, and more fun.&rdquo;</p></blockquote>
+
+<p>Swift is intended to be a near complete replacement for Objective-C, the language iOS and OS X apps are currently written in. While most of us love programming in Objective-C we realize that it has some rough edges. Objective-C has been around for decades and does not have a lot of the features and syntax more modern languages have introduced. Swift brings a host of modern features such as <a href="http://en.wikipedia.org/wiki/Generic_programming">generics</a>, <a href="http://en.wikipedia.org/wiki/Tuples">tuples</a>, <a href="http://en.wikipedia.org/wiki/Closure_(computer_programming)">closures</a>, <a href="http://en.wikipedia.org/wiki/Pattern_matching">pattern matching</a> and <a href="http://en.wikipedia.org/wiki/Type_inference">type inference</a> while remaining safe and most importantly, fast. Swift is compact and expressive which will lead to apps requiring less code and being easier to maintain.</p>
+
+<p>I predict that Swift&rsquo;s approachable and familiar syntax will lead to an influx of new Cocoa and Cocoa Touch developers. These new developers will bring new ideas to the platform. I can&rsquo;t wait to see what will happen over the next few years. We are going to move in directions we haven&rsquo;t yet conceived of. Its an exciting time to develop for iOS and OS X. As Mattt Thompson put it <a href="https://twitter.com/mattt/status/473557792331010048">&ldquo;How neat that we’re all beginners at the same time though, right?&rdquo;</a></p>
+
+<h2>Getting Started</h2>
+
+<p>Swift requires Xcode 6 beta which at the time of this writing is pre-release software. In order to download it you&rsquo;ll need to be a member of the iOS Developer Program or Mac Developer Program.</p>
+
+<p>Once you have Xcode 6 beta or later up and running you can start writing and compiling Swift.</p>
+
+<p>In an actual application deployed to iOS devices or a Mac Swift files have a <code>.swift</code> extension. They can be compiled along side Objective-C, C and Objective-C++ code. Objective-C code can use Swift classes (with some restrictions) and vice-a-versa.</p>
+
+<p>When conceiving Swift the authors at Apple had a goal of making learning Swift and trying out the language as easy, interactive and fun as possible. They named what they came up with Playgrounds.</p>
+
+<h3>Playgrounds</h3>
+
+<p>Playgrounds are files with a <code>.playground</code> extension. When opened in XCode 6 they launch an interactive environment for you to experiment with Swift code. Playgrounds are the quickest and easiest way to start writing Swift. They are a bit like Ruby&rsquo;s irb but much more powerful. Results are displayed immediately in a column on the right and through a powerful feature available in other areas of Xcode you are able to visualize several sophisticated types. It is even possible to see the results of values changing in your Swift code over time. There really is no way to do playgrounds justice here. You have to interact with one to understand how awesome they are.</p>
+
+<p>In fact, Apple has created a playground called &ldquo;GuidedTour.playground&rdquo; which is a comprehensive and interactive playground that goes through most of Swift&rsquo;s language features with descriptions and live examples that you can play with and modify on the fly. The iOS Developer Library has a <a href="https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/GuidedTour.html">Swift Tour</a> (you&rsquo;ll need a valid Apple developer account to access it). Click on <a href="/assets/Swift.playground.zip">Swift.playground.zip</a> to download a zip archive containing a playground file with all the code in this post.</p>
+
+<h3>Basics</h3>
+
+<h4>Everyone is a first class citizen in Swift</h4>
+
+<p>Strings, integers, doubles, classes, structs, enums and even functions are all valid types. Gone are the distinctions between primitives and objects. All types can be stored in collections and extended. The first classifying of all types provides a concise and uniform approach to developing in Swift.</p>
+
+<h4>Variables</h4>
+
+<p>Swift is able to infer type information in most cases so specifying it is not required if a value is assigned by the expression.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="c1">// Swift knows this is a string because the right hand value is a string</span>
+</span><span class='line'><span class="n">var</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Walter&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// variable and constant types are specified after the name and a colon</span>
+</span><span class='line'><span class="n">var</span> <span class="n">lastName</span> <span class="o">:</span> <span class="n">String</span> <span class="o">=</span> <span class="s">&quot;White&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">var</span> <span class="n">age</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1">// inferred to Int</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">var</span> <span class="n">explictAge</span> <span class="o">:</span> <span class="n">Int</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1">// explicitly set to Int</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">var</span> <span class="n">count</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="c1">// inferred to Double</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">var</span> <span class="n">explicitCount</span> <span class="o">:</span> <span class="n">Double</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1">// force to an int</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Constants</h4>
+
+<p>The Swift documentation favors immutability so constants are highly visible in the language. Constants are indicated using the <code>let</code> keyword in place of <code>var</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">let</span> <span class="n">immutableName</span> <span class="o">=</span> <span class="s">&quot;Walter&quot;</span> <span class="c1">// an immutable string constant</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// immutableName = &quot;Walter White&quot; // won&#39;t compile</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">var</span> <span class="n">mutableName</span> <span class="o">=</span> <span class="s">&quot;walter&quot;</span> <span class="c1">// a mutable string variable</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">mutableName</span> <span class="o">=</span> <span class="s">&quot;Walter White&quot;</span> <span class="c1">// works</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>String</h4>
+
+<p>Strings are concatenated with the <code>+</code> operator. They can be added to with the <code>+=</code> operator. Strings can also interpolate other calculated values using a backslash followed by the expression in parenthesis <code>\(expression)</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">var</span> <span class="n">nameDescription</span> <span class="o">=</span> <span class="s">&quot;Walter&quot;</span>
+</span><span class='line'><span class="n">nameDescription</span> <span class="o">+=</span> <span class="s">&quot; White&quot;</span> <span class="c1">// name = &quot;Walter White&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">let</span> <span class="n">yearsOld</span> <span class="o">=</span> <span class="mi">50</span>
+</span><span class='line'><span class="n">nameDescription</span> <span class="o">+=</span> <span class="s">&quot; is \(yearsOld) years old&quot;</span> <span class="c1">// name = &quot;Walter White is 50 years old&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Collections</h4>
+
+<p>Swift has several collection types. The most common are <code>Array</code> and <code>Dictionary</code>. Just like strings and the number types they are mutable if they are variables and immutable when they are constants.</p>
+
+<h4>Array</h4>
+
+<p>Arrays are typed in Swift.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">var</span> <span class="n">integers</span> <span class="o">:</span> <span class="n">Int</span><span class="p">[]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</span><span class='line'><span class="n">integers</span> <span class="o">+=</span> <span class="s">&quot;non integer&quot;</span> <span class="c1">// will not compile</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If the type can be inferred the type information is not required at declaration time.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">var</span> <span class="n">characters</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Jesse&quot;</span><span class="p">,</span> <span class="s">&quot;Walter&quot;</span><span class="p">,</span> <span class="s">&quot;Hank&quot;</span><span class="p">]</span> <span class="c1">// inferred as an array of strings</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">characters</span> <span class="o">+=</span> <span class="s">&quot;Skyler&quot;</span> <span class="c1">// add a string to the array</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">characters</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="c1">// &quot;Hank&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Dictionary</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">var</span> <span class="n">states</span> <span class="o">:</span> <span class="n">Dictionary</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span> <span class="n">Int</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">[</span>
+</span><span class='line'>    <span class="s">&quot;Colorado&quot;</span> <span class="o">:</span> <span class="mi">5000000</span><span class="p">,</span>
+</span><span class='line'>    <span class="s">&quot;Hawaii&quot;</span> <span class="o">:</span> <span class="mi">1000000</span>
+</span><span class='line'><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">var</span> <span class="n">shows</span> <span class="o">=</span> <span class="p">[</span>
+</span><span class='line'>    <span class="s">&quot;Walter&quot;</span> <span class="o">:</span> <span class="s">&quot;Science Teacher&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s">&quot;Jesse&quot;</span> <span class="o">:</span> <span class="s">&quot;Unemployed&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s">&quot;Hank&quot;</span> <span class="o">:</span> <span class="s">&quot;DEA Agent&quot;</span>
+</span><span class='line'><span class="p">]</span> <span class="c1">// type inferred to a key type String and value type String</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">shows</span><span class="p">[</span><span class="s">&quot;Jesse&quot;</span><span class="p">]</span> <span class="c1">// &quot;Unemployed&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">shows</span><span class="p">[</span><span class="s">&quot;Skyler&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;Accountant&quot;</span> <span class="c1">// add an element to the dictionary</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Control Flow</h4>
+
+<p>Swift has most of the familiar mechanisms for controlling flow that Objective-C developers are familiar with. They&rsquo;re just a lot cooler and more useful in Swift.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">var</span> <span class="n">registered</span> <span class="o">=</span> <span class="n">true</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="n">registered</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// if statements do not require parenthesis</span>
+</span><span class='line'>    <span class="c1">// but they do require curly braces</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Swift has range types that are enumerable</span>
+</span><span class='line'><span class="k">for</span> <span class="n">number</span> <span class="k">in</span> <span class="mf">5.</span><span class="p">.</span><span class="mf">.10</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">println</span><span class="p">(</span><span class="s">&quot;\(number) plus \(number) is \(number + number)&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">let</span> <span class="n">breakingBadCharacters</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Jesse&quot;</span><span class="p">,</span> <span class="s">&quot;Walter&quot;</span><span class="p">,</span> <span class="s">&quot;Hank&quot;</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">for</span> <span class="n">character</span> <span class="k">in</span> <span class="n">breakingBadCharacters</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">println</span><span class="p">(</span><span class="s">&quot;\(character)&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// a string&#39;s characters are enumerable</span>
+</span><span class='line'><span class="k">for</span> <span class="n">letter</span> <span class="k">in</span> <span class="s">&quot;Breaking Bad&quot;</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">println</span><span class="p">(</span><span class="n">letter</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">letter</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">var</span> <span class="n">funds</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'><span class="k">while</span> <span class="n">funds</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// cook meth until broke is false</span>
+</span><span class='line'>    <span class="n">funds</span><span class="o">++</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">do</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// cook meth at least once</span>
+</span><span class='line'>    <span class="n">funds</span><span class="o">++</span>
+</span><span class='line'><span class="p">}</span> <span class="k">while</span> <span class="n">funds</span> <span class="o">&lt;</span> <span class="mi">100</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Dictionaries are enumerable as a key value tuple pair. More on tuples below.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">let</span> <span class="n">cast</span> <span class="o">=</span> <span class="p">[</span>
+</span><span class='line'>    <span class="s">&quot;Walter&quot;</span> <span class="o">:</span> <span class="s">&quot;Science Teacher&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s">&quot;Jesse&quot;</span> <span class="o">:</span> <span class="s">&quot;Unemployed&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s">&quot;Hank&quot;</span> <span class="o">:</span> <span class="s">&quot;DEA Agent&quot;</span>
+</span><span class='line'><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">for</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">profession</span><span class="p">)</span> <span class="k">in</span> <span class="n">cast</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s">&quot;\(name) is a \(profession)&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Switch</h4>
+
+<p>The coolest and most powerful control flow mechanism in Swift is the switch statement. Swift&rsquo;s switch statement works with any type compared to Objective-C&rsquo;s integer only switching. Swift switch allows for pattern matching, a powerful feature new to iOS and OS X development.</p>
+
+<p>Switch statements must be exhaustive so a default is required if the case statements don&rsquo;t handle all possible cases. Execution does not fall through case statements so no <code>break</code> keyword is necessary.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">let</span> <span class="n">fullName</span> <span class="o">=</span> <span class="s">&quot;Walter White&quot;</span>
+</span><span class='line'><span class="n">var</span> <span class="n">output</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">switch</span> <span class="n">fullName</span> <span class="p">{</span>
+</span><span class='line'><span class="k">case</span> <span class="n">let</span> <span class="n">x</span> <span class="n">where</span> <span class="n">countElements</span><span class="p">(</span><span class="n">fullName</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="o">:</span>
+</span><span class='line'>    <span class="n">output</span> <span class="o">=</span> <span class="s">&quot;more than 3 characters long&quot;</span>
+</span><span class='line'><span class="k">case</span> <span class="s">&quot;Jesse&quot;</span><span class="p">,</span> <span class="s">&quot;Hank&quot;</span><span class="o">:</span>
+</span><span class='line'>    <span class="n">output</span> <span class="o">=</span> <span class="n">fullName</span>
+</span><span class='line'><span class="k">case</span> <span class="n">let</span> <span class="n">x</span> <span class="n">where</span> <span class="n">x</span><span class="p">.</span><span class="n">hasSuffix</span><span class="p">(</span><span class="s">&quot;White&quot;</span><span class="p">)</span><span class="o">:</span>
+</span><span class='line'>    <span class="n">output</span> <span class="o">=</span> <span class="s">&quot;ends in White&quot;</span>
+</span><span class='line'><span class="k">default</span><span class="o">:</span>
+</span><span class='line'>    <span class="n">output</span> <span class="o">=</span> <span class="s">&quot;no matches found&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="n">output</span> <span class="c1">// &quot;more than 3 characters long&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Functions</h4>
+
+<p>Functions are types just like everything else in Swift. You can define them, call them, as well as pass them as arguments to another function and return them from other functions. Functions are defined using the <code>func</code> keyword. They accept 0 or more arguments and may return a value. A function returns a value with a <code>-&gt;</code> and type after the parentheses.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">func</span> <span class="n">add</span><span class="p">(</span><span class="nl">a:</span><span class="n">Int</span><span class="p">,</span> <span class="nl">b:</span><span class="n">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">let</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">sum</span> <span class="c1">// 12</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In order to remain compatible with Cocoa and Cocoa Touch function arguments can have an external name as well as an internal variable name. Lets look at a <code>UITableViewDataSource</code> protocol method in both Objective-C and Swift.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="c1">// Objective-C</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="n">UITableViewCell</span> <span class="o">*</span><span class="p">)</span><span class="nf">tableView:</span><span class="p">(</span><span class="n">UITableView</span> <span class="o">*</span><span class="p">)</span><span class="nv">tableView</span>
+</span><span class='line'>         <span class="nf">cellForRowAtIndexPath:</span><span class="p">(</span><span class="n">NSIndexPath</span> <span class="o">*</span><span class="p">)</span><span class="nv">indexPath</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Swift</span>
+</span><span class='line'><span class="c1">// notice that the first argument does not have an external name</span>
+</span><span class='line'><span class="c1">// while the second argument is named cellForRowAtIndexPath externally</span>
+</span><span class='line'><span class="c1">// and indexPath internally</span>
+</span><span class='line'><span class="n">func</span> <span class="n">tableView</span><span class="p">(</span><span class="nl">tableView:</span> <span class="n">UITableView</span><span class="o">!</span><span class="p">,</span>
+</span><span class='line'>    <span class="n">cellForRowAtIndexPath</span> <span class="nl">indexPath:</span> <span class="n">NSIndexPath</span><span class="o">!</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UITableViewCell</span><span class="o">!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>The Cool New Hotness</h3>
+
+<p>The language features below are either completely new compared to Objective-C or they work in ways novel enough to note here.</p>
+
+<h4>Optionals</h4>
+
+<p>As I mentioned above, Swift is designed to be safe. Optionals help keep code safe by forcing the developer to be explicit about variables and constants. By default all variables and constants must have an assigned value. This ensures that it is safe to use variables and constants without first checking to see if they have a value. However, sometimes we&rsquo;ll need optional value variables or constants. This is where Swift Optionals come in. Optionals are a formal language feature that marks a variable or constant as potentially having no value. To mark a variable or constant as optional use a <code>?</code> after the type.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">var</span> <span class="nl">content:</span><span class="n">String</span><span class="o">?</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">func</span> <span class="n">isDone</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Bool</span><span class="o">?</span> <span class="p">{</span> <span class="k">return</span> <span class="nb">nil</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">func</span> <span class="n">storeUserInfo</span><span class="p">(</span><span class="nl">name:</span><span class="n">String</span><span class="o">?</span><span class="p">,</span> <span class="nl">age:</span><span class="n">Int</span><span class="o">?</span><span class="p">)</span> <span class="p">{}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>When using an optional variable or function with an optional return value we must explicitly unwrap the value held by the optional using a <code>!</code> after the referenced optional.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">content</span> <span class="o">=</span> <span class="s">&quot;Some content here&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">content</span> <span class="c1">// compile error</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">println</span><span class="p">(</span><span class="n">content</span><span class="o">!</span><span class="p">)</span> <span class="c1">// compiles but may introduce a run time crash if content is nil</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="n">content</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">println</span><span class="p">(</span><span class="n">content</span><span class="o">!</span><span class="p">)</span> <span class="c1">// safe because optionals are true if they have a value</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// automatic unwrapping with if let shorthand</span>
+</span><span class='line'><span class="k">if</span> <span class="n">let</span> <span class="n">safeContent</span> <span class="o">=</span> <span class="n">content</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">safeContent</span> <span class="c1">// preferred handling of optionals</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Tuples</h4>
+
+<p>Tuples are a group of compound values. To create a tuple enclose multiple values in parentheses. They can contain any number of values as well as any combination of types. The values can have names or not. Tuples are the mechanism for returning more than one value from a function. Access values in a tuple by position or name.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">var</span> <span class="n">ages</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">ages</span><span class="mf">.1</span> <span class="c1">// 15</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">func</span> <span class="n">getNames</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nl">tom:</span><span class="n">String</span><span class="p">,</span> <span class="nl">dick:</span><span class="n">String</span><span class="p">,</span> <span class="nl">harry:</span><span class="n">String</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">(</span><span class="s">&quot;Tom&quot;</span><span class="p">,</span> <span class="s">&quot;Dick&quot;</span><span class="p">,</span> <span class="s">&quot;Harry&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">let</span> <span class="p">(</span><span class="n">tom</span><span class="p">,</span> <span class="n">dick</span><span class="p">,</span> <span class="n">harry</span><span class="p">)</span> <span class="o">=</span> <span class="n">getNames</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">harry</span> <span class="c1">// &quot;Harry&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">getNames</span><span class="p">().</span><span class="n">dick</span> <span class="c1">// &quot;Dick&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Enums</h4>
+
+<p>Enums are useful for storing a known list of enumerable values. Swift enums support functions as well.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="k">enum</span> <span class="n">Framework</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">case</span> <span class="n">CocoaTouch</span><span class="p">,</span> <span class="n">Rails</span><span class="p">,</span> <span class="n">Android</span>
+</span><span class='line'>    <span class="n">func</span> <span class="n">language</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">String</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">switch</span> <span class="n">self</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">case</span> <span class="p">.</span><span class="nl">CocoaTouch:</span>
+</span><span class='line'>            <span class="k">return</span> <span class="s">&quot;Swift&quot;</span>
+</span><span class='line'>        <span class="k">case</span> <span class="p">.</span><span class="nl">Rails:</span>
+</span><span class='line'>            <span class="k">return</span> <span class="s">&quot;Ruby&quot;</span>
+</span><span class='line'>        <span class="k">case</span> <span class="p">.</span><span class="nl">Android:</span>
+</span><span class='line'>            <span class="k">return</span> <span class="s">&quot;Java&quot;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="n">let</span> <span class="n">rails</span> <span class="o">=</span> <span class="n">Framework</span><span class="p">.</span><span class="n">Rails</span>
+</span><span class='line'><span class="n">let</span> <span class="n">railsLanguage</span> <span class="o">=</span> <span class="n">rails</span><span class="p">.</span><span class="n">language</span><span class="p">()</span> <span class="c1">// &quot;Ruby&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Structs</h4>
+
+<p>Structs are similar to classes in Swift with the distinction that they are immutable by default. They are copied when passed in code. Classes are passed by reference.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="k">struct</span> <span class="n">Programmer</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">var</span> <span class="n">name</span> <span class="o">:</span> <span class="n">String</span>
+</span><span class='line'>    <span class="n">var</span> <span class="n">framework</span> <span class="o">:</span> <span class="n">Framework</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span> <span class="n">frameworkLanguage</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">String</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">framework</span><span class="p">.</span><span class="n">language</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">let</span> <span class="n">cocoaProgrammer</span> <span class="o">=</span> <span class="n">Programmer</span><span class="p">(</span><span class="nl">name:</span><span class="s">&quot;Sean&quot;</span><span class="p">,</span> <span class="nl">framework:</span><span class="p">.</span><span class="n">CocoaTouch</span><span class="p">)</span>
+</span><span class='line'><span class="n">let</span> <span class="n">frameworkLanguage</span> <span class="o">=</span> <span class="n">cocoaProgrammer</span><span class="p">.</span><span class="n">frameworkLanguage</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Generics</h4>
+
+<p>Generics are a powerful tool for code reuse. They abstract code and provide flexibility while maintaing compile time type safety. Under the hood Swift uses generics for a host of the standard library features including collections like Array and Dictionary.</p>
+
+<p><a href="https://itun.es/us/jEUH0.l"><strong><em>The Swift Programming Language</em></strong></a> has a great example of generics. The example is a simple <code>Stack</code>. In order to make the stack work with with any type generics are used. The stack is type safe but flexible enough to hold any type.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="k">struct</span> <span class="n">Stack</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">var</span> <span class="n">items</span> <span class="o">=</span> <span class="n">T</span><span class="p">[]()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">mutating</span> <span class="n">func</span> <span class="n">push</span><span class="p">(</span><span class="nl">item:</span> <span class="n">T</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">items</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">mutating</span> <span class="n">func</span> <span class="n">pop</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">T</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">items</span><span class="p">.</span><span class="n">removeLast</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">var</span> <span class="n">stackOfStrings</span> <span class="o">=</span> <span class="n">Stack</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="p">()</span>
+</span><span class='line'><span class="n">stackOfStrings</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="s">&quot;uno&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">stackOfStrings</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="s">&quot;dos&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">stackOfStrings</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="s">&quot;tres&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">stackOfStrings</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="s">&quot;cuatro&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="c1">// the stack now contains 4 strings</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">stackOfStrings</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span> <span class="c1">// won&#39;t compile because 123 is not a String</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h4>Extensions</h4>
+
+<p>Extensions allow you to add functionality to existing types. They are similar to Objective-C&rsquo;s categories and Ruby&rsquo;s Modules. Unlike an Objective-C category a Swift Extension can extend classes, structures and enums. Extensions can also add computed properties and add protocal conformance to an existing type. Extensions are available app wide at compile time.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">extension</span> <span class="n">Double</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">func</span> <span class="n">multiply</span><span class="p">(</span><span class="nl">b:</span><span class="n">Double</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Double</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">self</span> <span class="o">*</span> <span class="n">b</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="mf">5.5</span><span class="p">.</span><span class="n">multiply</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="c1">// 16.5</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h4>Protocols</h4>
+
+<p>Swift Protocols are similar to protocols in Objective-C but like their Extension counterparts they available on all types. Protocols are similiar to Java&rsquo;s Interfaces. When a type adopts a protocol it is conforming to a contract defined by the protocol. Protocols define optional or required functions and/or properties. The best new feature of protocols in Swift are protocol instance properties. Protocols do not define the implementation of their functions or properties, concrete types conforming to the protocol implement all required functions and properties.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">protocol</span> <span class="n">HighFiveable</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">numberOfHighFives:</span> <span class="n">Int</span> <span class="p">{</span> <span class="n">get</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span> <span class="n">highFive</span><span class="p">()</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">class</span> <span class="nl">Person:</span> <span class="n">HighFiveable</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">var</span> <span class="n">numberOfHighFives</span> <span class="o">=</span> <span class="mi">20</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span> <span class="n">highFive</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">println</span><span class="p">(</span><span class="s">&quot;I was high fived!&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">let</span> <span class="n">jim</span> <span class="o">=</span> <span class="n">Person</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">jim</span><span class="p">.</span><span class="n">highFive</span><span class="p">()</span> <span class="c1">// &quot;I was high fived!&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h3>Summary</h3>
+
+<p>I&rsquo;ve included all of the code snippets above in a playground file you can download and open up in Xcode 6 beta or greater.</p>
+
+<p><a href="/assets/Swift.playground.zip">Swift.playground.zip</a></p>
+
+<p>This is just a brief look at some of the key language featuers of Apple&rsquo;s new programming language, Swift. Reach me on Twitter <a href="https://twitter.com/sdougherty">@sdougherty</a> if you find any errors or have anything to add.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2014/06/05/wwdc-2014/">WWDC 2014</a></h1>
     
     
@@ -92,7 +751,7 @@
   
 
 
-<time datetime="2014-06-05T16:58:00-05:00" pubdate data-updated="true">Jun 5<span>th</span>, 2014</time>
+<time datetime="2014-06-05T16:58:00-06:00" pubdate data-updated="true">Jun 5<span>th</span>, 2014</time>
         
       </p>
     
@@ -275,7 +934,7 @@
   
 
 
-<time datetime="2014-05-28T23:01:00-05:00" pubdate data-updated="true">May 28<span>th</span>, 2014</time>
+<time datetime="2014-05-28T23:01:00-06:00" pubdate data-updated="true">May 28<span>th</span>, 2014</time>
         
       </p>
     
@@ -754,7 +1413,7 @@
   
 
 
-<time datetime="2014-05-17T15:48:00-05:00" pubdate data-updated="true">May 17<span>th</span>, 2014</time>
+<time datetime="2014-05-17T15:48:00-06:00" pubdate data-updated="true">May 17<span>th</span>, 2014</time>
         
       </p>
     
@@ -824,7 +1483,7 @@
   
 
 
-<time datetime="2013-05-22T13:56:00-05:00" pubdate data-updated="true">May 22<span>nd</span>, 2013</time>
+<time datetime="2013-05-22T13:56:00-06:00" pubdate data-updated="true">May 22<span>nd</span>, 2013</time>
         
       </p>
     
@@ -940,6 +1599,10 @@
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/06/17/swift/">Swift</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/06/05/wwdc-2014/">WWDC 2014</a>

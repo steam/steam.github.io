@@ -2,36 +2,40 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://steam.github.io/blog/2013/05/22/ios-data-security/</loc>
-        <lastmod>2014-05-18T10:25:00-05:00</lastmod>
+        <lastmod>2014-05-18T09:25:00-06:00</lastmod>
     </url>
     <url>
         <loc>
             http://steam.github.io/blog/2014/05/17/android-vs-ios-from-an-ios-developers-perspective/
         </loc>
-        <lastmod>2014-05-18T10:25:00-05:00</lastmod>
+        <lastmod>2014-05-18T09:25:00-06:00</lastmod>
     </url>
     <url>
         <loc>http://steam.github.io/blog/2014/05/28/dependency-injection-for-objective-c/</loc>
-        <lastmod>2014-05-31T15:01:47-05:00</lastmod>
+        <lastmod>2014-05-31T14:01:47-06:00</lastmod>
     </url>
     <url>
         <loc>http://steam.github.io/blog/2014/06/05/wwdc-2014/</loc>
-        <lastmod>2014-06-07T13:31:57-05:00</lastmod>
+        <lastmod>2014-06-07T12:31:57-06:00</lastmod>
+    </url>
+    <url>
+        <loc>http://steam.github.io/blog/2014/06/17/swift/</loc>
+        <lastmod>2014-06-17T09:57:43-06:00</lastmod>
     </url>
     <url>
         <loc>http://steam.github.io/blog/archives/</loc>
-        <lastmod>2014-06-07T13:31:57-05:00</lastmod>
+        <lastmod>2014-06-17T09:57:43-06:00</lastmod>
     </url>
     <url>
         <loc>http://steam.github.io/</loc>
-        <lastmod>2014-06-07T13:31:57-05:00</lastmod>
+        <lastmod>2014-06-17T09:57:43-06:00</lastmod>
     </url>
     <url>
         <loc>http://steam.github.io/robots.txt</loc>
-        <lastmod>2014-05-18T09:55:02-05:00</lastmod>
+        <lastmod>2014-05-18T08:55:02-06:00</lastmod>
     </url>
     <url>
         <loc>http://steam.github.io/search.html</loc>
-        <lastmod>2014-05-18T10:25:00-05:00</lastmod>
+        <lastmod>2014-05-18T09:25:00-06:00</lastmod>
     </url>
 </urlset>
