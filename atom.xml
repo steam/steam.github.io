@@ -4,7 +4,7 @@
   <title><![CDATA[Sean Dougherty]]></title>
   <link href="http://steam.github.io/atom.xml" rel="self"/>
   <link href="http://steam.github.io/"/>
-  <updated>2014-06-17T10:03:35-06:00</updated>
+  <updated>2014-12-30T14:28:21-07:00</updated>
   <id>http://steam.github.io/</id>
   <author>
     <name><![CDATA[Sean Dougherty]]></name>
@@ -12,6 +12,30 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Space Exploration]]></title>
+    <link href="http://steam.github.io/blog/2014/12/30/space-exploration/"/>
+    <updated>2014-12-30T14:26:00-07:00</updated>
+    <id>http://steam.github.io/blog/2014/12/30/space-exploration</id>
+    <content type="html"><![CDATA[<h1>Space Exploration</h1>
+
+<p>The recent launch of Orion got me thinking about space exploration. The nostalgic notion of the whole country excited about putting a man on the moon. I decided to learn more about it and started reading <a href="http://www.amazon.com/Apollo-Charles-Murray/dp/0976000806">Apollo</a>. Coincidentally Carrie gave me an early stocking stuffer, <a href="http://www.amazon.com/The-Martian-Novel-Andy-Weir-ebook/dp/B00EMXBDMA">The Martian</a> a fictional story about an astronaut stranded on Mars during an Ares space program mission. I plowed through the book and am now back to reading the much longer, and denser non-fictional history of the Apollo program. The space program is fascinating. Full of big personalities and huge ambition. The scale of the technical challenges they overcame is inspirational to me. The coordination of such an immense project is hard to grasp.</p>
+
+<p>While my work on iPhone apps is but a fraction of the scale I think there are a lot of lessons that apply.</p>
+
+<ul>
+<li>Failure and the process of investigating failure is as much a part of the engineering process as succeeding. Fixing a bug or spending the time to figure out a challenge is very valuable, not a waste of time or effort.</li>
+<li>Discipline is a lost art. My number one goal for the new year is a renewed effort in self discipline and focus. Some aspects of programming are tedious but they are essential to a quality product.</li>
+<li>Along those lines: Technical Journaling could be especially useful for my poor memory. This entry is the first in my attempt to capture and organize my thoughts. I plan to document my problem solving and daily progress. I ordered a Moleskin Evernote edition with the hopes of retaining much more of my daily thinking through the act of physically writing it down. Being able to scan it in addresses my concerns about it not being searchable and backed up.</li>
+</ul>
+
+
+<p>I plan to post as much of my journal here as possible. If you&rsquo;d rather follow along without all the other Ello posts of mine I&rsquo;ll have it on my blog, <a href="http://seancdougherty.com">seancdougherty.com</a> as well.</p>
+
+<p><strong>Sean and Ello to the moon in 2015!</strong> :rocket:</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Swift]]></title>
