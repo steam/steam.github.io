@@ -4,7 +4,7 @@
   <title><![CDATA[Sean Dougherty]]></title>
   <link href="http://steam.github.io/atom.xml" rel="self"/>
   <link href="http://steam.github.io/"/>
-  <updated>2014-12-31T11:51:29-07:00</updated>
+  <updated>2016-05-25T20:15:51-06:00</updated>
   <id>http://steam.github.io/</id>
   <author>
     <name><![CDATA[Sean Dougherty]]></name>
@@ -18,11 +18,11 @@
     <link href="http://steam.github.io/blog/2014/12/31/more-functional-please/"/>
     <updated>2014-12-31T10:43:00-07:00</updated>
     <id>http://steam.github.io/blog/2014/12/31/more-functional-please</id>
-    <content type="html"><![CDATA[<p>Since starting the Ello iOS app I’ve been writing Swift 99% of the time. Its not yet as natural as Objective-C to me but the benefits are obvious. A concise syntax with ALL types as first class citizens has removed a lot of the primitive/object song and dance required in Objective-C. I knew I’d love Swift&rsquo;s syntax and type system. What I’ve been surprised by, and excited by, are Swift’s functional features. Most of the interesting exploration and writing about Swift has come from the Functional programming community. I have to admit that almost all of the functional programming concepts are new to me. Like most Objective-C developers I come from a world of strict object orientation and an imperative programming mindset.</p>
+    <content type="html"><![CDATA[<p>Since starting the Ello iOS app I&rsquo;ve been writing Swift 99% of the time. Its not yet as natural as Objective-C to me but the benefits are obvious. A concise syntax with ALL types as first class citizens has removed a lot of the primitive/object song and dance required in Objective-C. I knew I&rsquo;d love Swift&rsquo;s syntax and type system. What I&rsquo;ve been surprised by, and excited by, are Swift&rsquo;s functional features. Most of the interesting exploration and writing about Swift has come from the Functional programming community. I have to admit that almost all of the functional programming concepts are new to me. Like most Objective-C developers I come from a world of strict object orientation and an imperative programming mindset.</p>
 
-<p>This new (to me) functional approach has opened up a world of new techniques and tools I’m convinced will make my code easier to maintain and less error prone. The takeaway for me so far is that functional programming’s primary benefit is removing as much concern about state as possible while focusing on the <strong>WHAT</strong> instead of the <strong>HOW</strong>.</p>
+<p>This new (to me) functional approach has opened up a world of new techniques and tools I&rsquo;m convinced will make my code easier to maintain and less error prone. The takeaway for me so far is that functional programming&rsquo;s primary benefit is removing as much concern about state as possible while focusing on the <strong>WHAT</strong> instead of the <strong>HOW</strong>.</p>
 
-<p>Managing state is one of the most common problems we encounter when building a reasonably sized application. It starts out simple at first. An instance variable here, another one over there. State instance variables are cheap and convenient. They help you solve an immediate problem and allow you to get back to the function or task at hand. The problem is that they introduce huge complexity as a system grows. Their intended usage and area of influence becomes unclear. A bit like the story of the boiling frog they add complexity little by little over time. Before you’ve recognized it the application is in big trouble. The problem is that if they’re not rigorously maintained they can add untold hours of development to the life of an application.</p>
+<p>Managing state is one of the most common problems we encounter when building a reasonably sized application. It starts out simple at first. An instance variable here, another one over there. State instance variables are cheap and convenient. They help you solve an immediate problem and allow you to get back to the function or task at hand. The problem is that they introduce huge complexity as a system grows. Their intended usage and area of influence becomes unclear. A bit like the story of the boiling frog they add complexity little by little over time. Before you&rsquo;ve recognized it the application is in big trouble. The problem is that if they&rsquo;re not rigorously maintained they can add untold hours of development to the life of an application.</p>
 
 <p>Functional programming favors immutability over mutable objects. At first this seemed wasteful to me. Why create something new each time when I already have an available object. Turns out that the stability of data structures not changing is usually worth the small trade off of allocating a new one.</p>
 
@@ -47,7 +47,7 @@
 <span class='line-number'>15</span>
 </pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="k">struct</span> <span class="n">Region</span> <span class="p">{</span>
 </span><span class='line'>  <span class="n">let</span> <span class="nl">content:</span><span class="n">String</span>
-</span><span class='line'>  
+</span><span class='line'>
 </span><span class='line'>  <span class="n">init</span><span class="p">(</span><span class="nl">content:</span><span class="n">String</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>      <span class="n">self</span><span class="p">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">content</span>
 </span><span class='line'>  <span class="p">}</span>
@@ -122,7 +122,7 @@
     <link href="http://steam.github.io/blog/2014/12/30/space-exploration/"/>
     <updated>2014-12-30T14:26:00-07:00</updated>
     <id>http://steam.github.io/blog/2014/12/30/space-exploration</id>
-    <content type="html"><![CDATA[<p>The recent launch of Orion got me thinking about space exploration. The nostalgic notion of the whole country excited about putting a man on the moon. I decided to learn more about it and started reading <a href="http://www.amazon.com/Apollo-Charles-Murray/dp/0976000806">Apollo</a>. Coincidentally Carrie gave me an early stocking stuffer, <a href="http://www.amazon.com/The-Martian-Novel-Andy-Weir-ebook/dp/B00EMXBDMA">The Martian</a> a fictional story about an astronaut stranded on Mars during an Ares space program mission. I plowed through the book and am now back to reading the much longer, and denser non-fictional history of the Apollo program. The space program is fascinating. Full of big personalities and huge ambition. The scale of the technical challenges they overcame is inspirational to me. The coordination of such an immense project is hard to grasp.</p>
+    <content type="html"><![CDATA[<p>The recent launch of Orion got me thinking about space exploration. The nostalgic notion of the whole country excited about putting a man on the moon. I decided to learn more about it and started reading <a href="http://www.amazon.com/Apollo-Charles-Murray/dp/0976000806">Apollo</a>. Coincidentally Carrie gave me an early stocking stuffer, <a href="https://www.amazon.com/Martian-Novel-Andy-Weir-ebook/dp/B00EMXBDMA">The Martian</a> a fictional story about an astronaut stranded on Mars during an Ares space program mission. I plowed through the book and am now back to reading the much longer, and denser non-fictional history of the Apollo program. The space program is fascinating. Full of big personalities and huge ambition. The scale of the technical challenges they overcame is inspirational to me. The coordination of such an immense project is hard to grasp.</p>
 
 <p>While my work on iPhone apps is but a fraction of the scale I think there are a lot of lessons that apply.</p>
 
