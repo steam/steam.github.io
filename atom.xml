@@ -4,7 +4,7 @@
   <title><![CDATA[Sean Dougherty]]></title>
   <link href="http://steam.github.io/atom.xml" rel="self"/>
   <link href="http://steam.github.io/"/>
-  <updated>2016-05-25T20:42:27-06:00</updated>
+  <updated>2016-05-25T20:49:47-06:00</updated>
   <id>http://steam.github.io/</id>
   <author>
     <name><![CDATA[Sean Dougherty]]></name>
@@ -12,6 +12,132 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[More Functional Please]]></title>
+    <link href="http://steam.github.io/blog/2014/12/31/more-functional-please/"/>
+    <updated>2014-12-31T10:43:00-07:00</updated>
+    <id>http://steam.github.io/blog/2014/12/31/more-functional-please</id>
+    <content type="html"><![CDATA[<p>Since starting the Ello iOS app I&rsquo;ve been writing Swift 99% of the time. Its not yet as natural as Objective-C to me but the benefits are obvious. A concise syntax with ALL types as first class citizens has removed a lot of the primitive/object song and dance required in Objective-C. I knew I&rsquo;d love Swift&rsquo;s syntax and type system. What I&rsquo;ve been surprised by, and excited by, are Swift&rsquo;s functional features. Most of the interesting exploration and writing about Swift has come from the Functional programming community. I have to admit that almost all of the functional programming concepts are new to me. Like most Objective-C developers I come from a world of strict object orientation and an imperative programming mindset.</p>
+
+<p>This new (to me) functional approach has opened up a world of new techniques and tools I&rsquo;m convinced will make my code easier to maintain and less error prone. The takeaway for me so far is that functional programming&rsquo;s primary benefit is removing as much concern about state as possible while focusing on the <strong>WHAT</strong> instead of the <strong>HOW</strong>.</p>
+
+<p>Managing state is one of the most common problems we encounter when building a reasonably sized application. It starts out simple at first. An instance variable here, another one over there. State instance variables are cheap and convenient. They help you solve an immediate problem and allow you to get back to the function or task at hand. The problem is that they introduce huge complexity as a system grows. Their intended usage and area of influence becomes unclear. A bit like the story of the boiling frog they add complexity little by little over time. Before you&rsquo;ve recognized it the application is in big trouble. The problem is that if they&rsquo;re not rigorously maintained they can add untold hours of development to the life of an application.</p>
+
+<p>Functional programming favors immutability over mutable objects. At first this seemed wasteful to me. Why create something new each time when I already have an available object. Turns out that the stability of data structures not changing is usually worth the small trade off of allocating a new one.</p>
+
+<p>I recently came across Rob Napier&rsquo;s slides from his talk <a href="https://speakerdeck.com/rnapier/llama-calculus">&ldquo;Introduction to functional programming in Swift&rdquo;</a> from CocoaConf Atlanta 2014. Its a great set of slides that I encourage you to read if you&rsquo;re interested in a more in depth look at functional concepts and motivations. The example below is a simple example of using Swift&rsquo;s <code>map</code> function in place of the traditional for loop.</p>
+
+<p>This code is a simplified version of code we have in the Ello app. Posts represent a user&rsquo;s post. Regions are sections of content in a post. Our goal is to create an array of <code>String</code> types, each containing the content for an individual region. Simple enough.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="k">struct</span> <span class="n">Region</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">let</span> <span class="nl">content:</span><span class="n">String</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">init</span><span class="p">(</span><span class="nl">content:</span><span class="n">String</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">self</span><span class="p">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">content</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">struct</span> <span class="n">Post</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">let</span> <span class="nl">regions:</span><span class="p">[</span><span class="n">Region</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">init</span><span class="p">(</span><span class="nl">regions:</span><span class="p">[</span><span class="n">Region</span><span class="p">])</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">self</span><span class="p">.</span><span class="n">regions</span> <span class="o">=</span> <span class="n">regions</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>An array of <code>strings</code> using the imperative for loop. We pass in an array of posts, loop over them, inner loop over their regions and append each region&rsquo;s content property to a temporary array and return it.</p>
+
+<p>This is slightly contrived and unlikely to appear in the wild (hopefully) but it illustrates the most imperative way we can solve the problem. Most of the syntax is focused on the <strong>how</strong>. We have three temporary variables <code>regions</code>, <code>i</code> and <code>j</code>, subscripting, lots of the machinery is exposed.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">func</span> <span class="n">regions</span><span class="p">(</span><span class="nl">posts:</span><span class="p">[</span><span class="n">Post</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">String</span><span class="p">]</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">var</span> <span class="n">regions</span> <span class="o">=</span> <span class="p">[</span><span class="n">String</span><span class="p">]()</span>
+</span><span class='line'>  <span class="k">for</span> <span class="n">var</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">posts</span><span class="p">.</span><span class="n">count</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">let</span> <span class="n">post</span> <span class="o">=</span> <span class="n">posts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span><span class='line'>      <span class="k">for</span> <span class="n">var</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">post</span><span class="p">.</span><span class="n">regions</span><span class="p">.</span><span class="n">count</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">let</span> <span class="n">region</span> <span class="o">=</span> <span class="n">post</span><span class="p">.</span><span class="n">regions</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+</span><span class='line'>          <span class="n">regions</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">region</span><span class="p">.</span><span class="n">content</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">regions</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Lets solve the problem using Swift&rsquo;s <code>Array.map</code> function. <code>map</code> enumerates the array handing your function one element from the array. You do whatever you want with the element and hand back the type you specify as the return value. Here we map over posts and for each post in posts we map over it&rsquo;s regions. For each region we return it&rsquo;s <code>content</code> property. Notice the use of the <code>join</code> function. <code>join</code> is a handy function most commonly used to convert an array of strings into a single string. In this case we use it to turn an array of arrays into a flattened array.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">func</span> <span class="n">regions</span><span class="p">(</span><span class="nl">posts:</span><span class="p">[</span><span class="n">Post</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">String</span><span class="p">]</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">join</span><span class="p">([],</span>
+</span><span class='line'>      <span class="n">posts</span><span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">post</span> <span class="k">in</span>
+</span><span class='line'>          <span class="n">post</span><span class="p">.</span><span class="n">regions</span><span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">$0</span><span class="p">.</span><span class="n">content</span> <span class="p">}</span>
+</span><span class='line'>      <span class="p">})</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The functional approach uses no temporary variables and focuses on the <strong>what</strong> rather than the <strong>how</strong>. In this case it&rsquo;s more succinct as well.</p>
+
+<p>These concepts are definitely Functional Programming 101 (or maybe even a pre-requisite) but they&rsquo;re easily understandable and were my gateway drug into more sophisticated functional techniques. I&rsquo;m still a strong believer in object orientation and intend to remain one but functions like <code>map</code> are fantastic new tools we can use to make our Swift code more readable, safer and less error prone.</p>
+
+<p>I consider myself a n00b when it comes to functional thinking. Our backend counterparts in the ruby world have used these techniques for years. My goal is to find situations where I can challenge my existing mode of imperative problem solving with a functional approach. I&rsquo;m convinced my code will be more stable, more readable and more portable. Plus, this stuff is just plain fun.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Space Exploration]]></title>
+    <link href="http://steam.github.io/blog/2014/12/30/space-exploration/"/>
+    <updated>2014-12-30T14:26:00-07:00</updated>
+    <id>http://steam.github.io/blog/2014/12/30/space-exploration</id>
+    <content type="html"><![CDATA[<p>The recent launch of Orion got me thinking about space exploration. The nostalgic notion of the whole country excited about putting a man on the moon. I decided to learn more about it and started reading <a href="http://www.amazon.com/Apollo-Charles-Murray/dp/0976000806">Apollo</a>. Coincidentally Carrie gave me an early stocking stuffer, <a href="https://www.amazon.com/Martian-Novel-Andy-Weir-ebook/dp/B00EMXBDMA">The Martian</a> a fictional story about an astronaut stranded on Mars during an Ares space program mission. I plowed through the book and am now back to reading the much longer, and denser non-fictional history of the Apollo program. The space program is fascinating. Full of big personalities and huge ambition. The scale of the technical challenges they overcame is inspirational to me. The coordination of such an immense project is hard to grasp.</p>
+
+<p>While my work on iPhone apps is but a fraction of the scale I think there are a lot of lessons that apply.</p>
+
+<ul>
+<li>Failure and the process of investigating failure is as much a part of the engineering process as succeeding. Fixing a bug or spending the time to figure out a challenge is very valuable, not a waste of time or effort.</li>
+<li>Discipline is a lost art. My number one goal for the new year is a renewed effort in self discipline and focus. Some aspects of programming are tedious but they are essential to a quality product.</li>
+<li>Along those lines: Technical Journaling could be especially useful for my poor memory. This entry is the first in my attempt to capture and organize my thoughts. I plan to document my problem solving and daily progress. I ordered a Moleskin Evernote edition with the hopes of retaining much more of my daily thinking through the act of physically writing it down. Being able to scan it in addresses my concerns about it not being searchable and backed up.</li>
+</ul>
+
+
+<p>I plan to post as much of my journal here as possible. If you&rsquo;d rather follow along without all the other Ello posts of mine I&rsquo;ll have it on my blog, <a href="http://seancdougherty.com">seancdougherty.com</a> as well.</p>
+
+<p><strong>Sean and Ello to the moon in 2015!</strong> 🚀</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Swift]]></title>
