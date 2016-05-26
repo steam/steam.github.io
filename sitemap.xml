@@ -40,7 +40,11 @@
     </url>
     <url>
         <loc>http://steam.github.io/</loc>
-        <lastmod>2016-05-25T20:54:04-06:00</lastmod>
+        <lastmod>2016-05-26T10:41:22-06:00</lastmod>
+    </url>
+    <url>
+        <loc>http://steam.github.io/products/</loc>
+        <lastmod>2016-05-26T10:45:06-06:00</lastmod>
     </url>
     <url>
         <loc>http://steam.github.io/robots.txt</loc>
@@ -49,5 +53,9 @@
     <url>
         <loc>http://steam.github.io/search.html</loc>
         <lastmod>2016-05-25T14:07:15-06:00</lastmod>
+    </url>
+    <url>
+        <loc>http://steam.github.io/work-history/</loc>
+        <lastmod>2016-05-26T10:16:48-06:00</lastmod>
     </url>
 </urlset>
