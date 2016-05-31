@@ -1,0 +1,360 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>More Functional Please - Sean Dougherty</title>
+  <meta name="author" content="Sean Dougherty">
+
+  
+  <meta name="description" content="Since starting the Ello iOS app I&rsquo;ve been writing Swift 99% of the time. Its not yet as natural as Objective-C to me but the benefits are &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://steam.github.io/blog/2014/12/31/more-functional-please">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Sean Dougherty" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Noto+Serif:400,700' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-40996992-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Sean Dougherty</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  
+  
+</ul>
+
+<ul class="main-navigation">
+  <li><a href="/">Home</a></li>
+  <li><a href="/products/">Products</a></li>
+  <li><a href="/work-history/">Work History</a></li>
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/blog/archives/">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">More Functional Please</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-12-31T10:43:00-07:00" pubdate data-updated="true">Dec 31<span>st</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Since starting the Ello iOS app I&rsquo;ve been writing Swift 99% of the time. Its not yet as natural as Objective-C to me but the benefits are obvious. A concise syntax with ALL types as first class citizens has removed a lot of the primitive/object song and dance required in Objective-C. I knew I&rsquo;d love Swift&rsquo;s syntax and type system. What I&rsquo;ve been surprised by, and excited by, are Swift&rsquo;s functional features. Most of the interesting exploration and writing about Swift has come from the Functional programming community. I have to admit that almost all of the functional programming concepts are new to me. Like most Objective-C developers I come from a world of strict object orientation and an imperative programming mindset.</p>
+
+<p>This new (to me) functional approach has opened up a world of new techniques and tools I&rsquo;m convinced will make my code easier to maintain and less error prone. The takeaway for me so far is that functional programming&rsquo;s primary benefit is removing as much concern about state as possible while focusing on the <strong>WHAT</strong> instead of the <strong>HOW</strong>.</p>
+
+<p>Managing state is one of the most common problems we encounter when building a reasonably sized application. It starts out simple at first. An instance variable here, another one over there. State instance variables are cheap and convenient. They help you solve an immediate problem and allow you to get back to the function or task at hand. The problem is that they introduce huge complexity as a system grows. Their intended usage and area of influence becomes unclear. A bit like the story of the boiling frog they add complexity little by little over time. Before you&rsquo;ve recognized it the application is in big trouble. The problem is that if they&rsquo;re not rigorously maintained they can add untold hours of development to the life of an application.</p>
+
+<p>Functional programming favors immutability over mutable objects. At first this seemed wasteful to me. Why create something new each time when I already have an available object. Turns out that the stability of data structures not changing is usually worth the small trade off of allocating a new one.</p>
+
+<p>I recently came across Rob Napier&rsquo;s slides from his talk <a href="https://speakerdeck.com/rnapier/llama-calculus">&ldquo;Introduction to functional programming in Swift&rdquo;</a> from CocoaConf Atlanta 2014. Its a great set of slides that I encourage you to read if you&rsquo;re interested in a more in depth look at functional concepts and motivations. The example below is a simple example of using Swift&rsquo;s <code>map</code> function in place of the traditional for loop.</p>
+
+<p>This code is a simplified version of code we have in the Ello app. Posts represent a user&rsquo;s post. Regions are sections of content in a post. Our goal is to create an array of <code>String</code> types, each containing the content for an individual region. Simple enough.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="k">struct</span> <span class="n">Region</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">let</span> <span class="nl">content:</span><span class="n">String</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">init</span><span class="p">(</span><span class="nl">content:</span><span class="n">String</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">self</span><span class="p">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">content</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">struct</span> <span class="n">Post</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">let</span> <span class="nl">regions:</span><span class="p">[</span><span class="n">Region</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">init</span><span class="p">(</span><span class="nl">regions:</span><span class="p">[</span><span class="n">Region</span><span class="p">])</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">self</span><span class="p">.</span><span class="n">regions</span> <span class="o">=</span> <span class="n">regions</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>An array of <code>strings</code> using the imperative for loop. We pass in an array of posts, loop over them, inner loop over their regions and append each region&rsquo;s content property to a temporary array and return it.</p>
+
+<p>This is slightly contrived and unlikely to appear in the wild (hopefully) but it illustrates the most imperative way we can solve the problem. Most of the syntax is focused on the <strong>how</strong>. We have three temporary variables <code>regions</code>, <code>i</code> and <code>j</code>, subscripting, lots of the machinery is exposed.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">func</span> <span class="n">regions</span><span class="p">(</span><span class="nl">posts:</span><span class="p">[</span><span class="n">Post</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">String</span><span class="p">]</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">var</span> <span class="n">regions</span> <span class="o">=</span> <span class="p">[</span><span class="n">String</span><span class="p">]()</span>
+</span><span class='line'>  <span class="k">for</span> <span class="n">var</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">posts</span><span class="p">.</span><span class="n">count</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">let</span> <span class="n">post</span> <span class="o">=</span> <span class="n">posts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span><span class='line'>      <span class="k">for</span> <span class="n">var</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">post</span><span class="p">.</span><span class="n">regions</span><span class="p">.</span><span class="n">count</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">let</span> <span class="n">region</span> <span class="o">=</span> <span class="n">post</span><span class="p">.</span><span class="n">regions</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+</span><span class='line'>          <span class="n">regions</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">region</span><span class="p">.</span><span class="n">content</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">regions</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Lets solve the problem using Swift&rsquo;s <code>Array.map</code> function. <code>map</code> enumerates the array handing your function one element from the array. You do whatever you want with the element and hand back the type you specify as the return value. Here we map over posts and for each post in posts we map over it&rsquo;s regions. For each region we return it&rsquo;s <code>content</code> property. Notice the use of the <code>join</code> function. <code>join</code> is a handy function most commonly used to convert an array of strings into a single string. In this case we use it to turn an array of arrays into a flattened array.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">func</span> <span class="n">regions</span><span class="p">(</span><span class="nl">posts:</span><span class="p">[</span><span class="n">Post</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">String</span><span class="p">]</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">join</span><span class="p">([],</span>
+</span><span class='line'>      <span class="n">posts</span><span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">post</span> <span class="k">in</span>
+</span><span class='line'>          <span class="n">post</span><span class="p">.</span><span class="n">regions</span><span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">$0</span><span class="p">.</span><span class="n">content</span> <span class="p">}</span>
+</span><span class='line'>      <span class="p">})</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The functional approach uses no temporary variables and focuses on the <strong>what</strong> rather than the <strong>how</strong>. In this case it&rsquo;s more succinct as well.</p>
+
+<p>These concepts are definitely Functional Programming 101 (or maybe even a pre-requisite) but they&rsquo;re easily understandable and were my gateway drug into more sophisticated functional techniques. I&rsquo;m still a strong believer in object orientation and intend to remain one but functions like <code>map</code> are fantastic new tools we can use to make our Swift code more readable, safer and less error prone.</p>
+
+<p>I consider myself a n00b when it comes to functional thinking. Our backend counterparts in the ruby world have used these techniques for years. My goal is to find situations where I can challenge my existing mode of imperative problem solving with a functional approach. I&rsquo;m convinced my code will be more stable, more readable and more portable. Plus, this stuff is just plain fun.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Sean Dougherty</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-12-31T10:43:00-07:00" pubdate data-updated="true">Dec 31<span>st</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://steam.github.io/blog/2014/12/31/more-functional-please/" data-via="sdougherty" data-counturl="http://steam.github.io/blog/2014/12/31/more-functional-please/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/12/30/space-exploration/" title="Previous Post: Space Exploration">&laquo; Space Exploration</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+  <aside class="sidebar">
+   
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:steam.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+  
+    <section>  
+  <h1>About Me</h1>
+  <img src="/assets/sean.jpg">
+  <p>I am a mobile software engineer living in Denver Colorado. I spend my time writing code, mostly Swift, hanging out with my wife and 3 boys, injuring myself while running and coaching my kids' soccer teams.</p>
+	<p>I am currently the Mobile Lead working with the awesome folks at <a href="http://ello.co">Ello</a>.</p>
+</section>
+<section>
+  <div>
+    <p><br />Come say hi at Ello</p>
+    <p><iframe class='button' frameborder='0' border='0' scrolling='no' allowtransparency='true' height='40' width='40' src='https://button.ello.co/button?color=black&username=sean&size=large'></iframe></p>
+  </div>
+</section>
+
+<section>
+  <div>
+    <p><br /><a href="http://twitter.com/sdougherty">My Tweets, on Twitter.</a></p>
+    <a href="http://twitter.com/sdougherty" class="twitter-follow-button" data-show-count="">Follow @sdougherty</a>
+  </div>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/12/31/more-functional-please/">More Functional Please</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/12/30/space-exploration/">Space Exploration</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/06/17/swift/">Swift</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/06/05/wwdc-2014/">WWDC 2014</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/05/28/dependency-injection-for-objective-c/">Dependency Injection for Objective-C</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Sean Dougherty
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+<script>
+  $(document).ready(function() {  
+  var stickyNavTop = $('nav').offset().top;  
+    
+  var stickyNav = function(){  
+  var scrollTop = $(window).scrollTop();  
+         
+  if (scrollTop > stickyNavTop) {   
+      $('nav').addClass('sticky');  
+  } else {  
+      $('nav').removeClass('sticky');   
+  }  
+  };  
+    
+  stickyNav();  
+    
+  $(window).scroll(function() {  
+      stickyNav();  
+  });  
+  });  
+</script>
+
+
+</body>
+</html>

@@ -23,12 +23,28 @@
         <lastmod>2016-05-25T14:07:15-06:00</lastmod>
     </url>
     <url>
+        <loc>http://steam.github.io/blog/2014/12/30/space-exploration/</loc>
+        <lastmod>2016-05-25T20:49:28-06:00</lastmod>
+    </url>
+    <url>
+        <loc>http://steam.github.io/blog/2014/12/31/more-functional-please/</loc>
+        <lastmod>2016-05-25T20:49:28-06:00</lastmod>
+    </url>
+    <url>
         <loc>http://steam.github.io/blog/archives/</loc>
-        <lastmod>2016-05-25T14:07:15-06:00</lastmod>
+        <lastmod>2016-05-25T20:49:28-06:00</lastmod>
+    </url>
+    <url>
+        <loc>http://steam.github.io/blog/</loc>
+        <lastmod>2016-05-25T20:49:28-06:00</lastmod>
     </url>
     <url>
         <loc>http://steam.github.io/</loc>
-        <lastmod>2016-05-25T14:07:15-06:00</lastmod>
+        <lastmod>2016-05-30T20:26:13-06:00</lastmod>
+    </url>
+    <url>
+        <loc>http://steam.github.io/products/</loc>
+        <lastmod>2016-05-26T21:41:50-06:00</lastmod>
     </url>
     <url>
         <loc>http://steam.github.io/robots.txt</loc>
@@ -37,5 +53,9 @@
     <url>
         <loc>http://steam.github.io/search.html</loc>
         <lastmod>2016-05-25T14:07:15-06:00</lastmod>
+    </url>
+    <url>
+        <loc>http://steam.github.io/work-history/</loc>
+        <lastmod>2016-05-30T20:27:00-06:00</lastmod>
     </url>
 </urlset>
