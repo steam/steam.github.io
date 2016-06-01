@@ -1,0 +1,363 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Big-O Notation - Sean Dougherty</title>
+  <meta name="author" content="Sean Dougherty">
+
+  
+  <meta name="description" content="Any time a blog post, colleague or programming book uses big O notation I glance at it, record some general impression of the function/algorithm& &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://steam.github.io/blog/2016/05/31/big-o-notation">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Sean Dougherty" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Noto+Serif:400,700' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-40996992-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Sean Dougherty</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  
+  
+</ul>
+
+<ul class="main-navigation">
+  <li><a href="/">Home</a></li>
+  <li><a href="/products/">Products</a></li>
+  <li><a href="/work-history/">Work History</a></li>
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/blog/archives/">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Big-O Notation</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-05-31T11:39:00-06:00" pubdate data-updated="true">May 31<span>st</span>, 2016</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Any time a blog post, colleague or programming book uses big O notation I glance at it, record some general impression of the function/algorithm&rsquo;s performance and move on. I know that big O notation describes how the rate of computation time changes as the input size grows. Or more simply put, big O communicates the efficiency of a function. What I&rsquo;ve been missing are the specifics about how an algorithm&rsquo;s big O notation is calculated and when one algorithm is more preferable to another.</p>
+
+<p>Big O describes the efficiency of an algorithm when it operates on an arbitrarily large set of data and describe a &lsquo;worst case&rsquo; scenario. Often times the performance characteristics of an algorithm are different for smaller sets of data.</p>
+
+<p>At the most efficient end of the spectrum are <em><em>constant time</em></em> algorithms. These are functions that (basically) take the same amount of time regardless of the input size. Constant time is expressed as <code>O(1)</code>. The following example is a constant time function because hash-based lookups in Swift do not require enumeration over the entire collection.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="c1">// hash-based lookups on a swift dictionary are O(1) </span>
+</span><span class='line'><span class="n">func</span> <span class="n">age</span><span class="p">(</span><span class="nl">name:</span> <span class="n">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int</span><span class="o">?</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">let</span> <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;jane&quot;</span><span class="o">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s">&quot;john&quot;</span><span class="o">:</span> <span class="mi">25</span><span class="p">,</span> <span class="s">&quot;sam&quot;</span><span class="o">:</span> <span class="mi">19</span><span class="p">]</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">names</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Another very common notation is <em><em>linear time</em></em> which is represented as <code>O(n)</code>. A linear algorithm&rsquo;s execution time grows linearly with the size of it&rsquo;s input. This simple array lookup has a complexity of <code>O(n)</code> because it (potentially) requires enumerating the entire collection to produce a result.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="c1">// enumerating a simple swift array is O(n) </span>
+</span><span class='line'><span class="c1">// there are more efficient ways to write this code</span>
+</span><span class='line'><span class="n">func</span> <span class="n">ageFound</span><span class="p">(</span><span class="nl">age:</span> <span class="n">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Bool</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">let</span> <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">19</span><span class="p">]</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">value</span> <span class="k">in</span> <span class="n">values</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="n">age</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">true</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">false</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em><em>Quadratic time</em></em>, written as <code>O(n2)</code> describes an algorithm that grows quadratically. Increasing the input size by a single unit increases the workload by an order of magnitude. The easiest way to visualize <code>O(n2)</code> involves a loop nested in a loop. For each element in the outer loop the algorithm must loop through every element in the inner loop.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="c1">// printing out all the combinations of two arrays of strings is `O(n2)`</span>
+</span><span class='line'><span class="c1">// suits and ranks taken from the excellent book `Advanced Swift` by </span>
+</span><span class='line'><span class="c1">// Chris Eidhof and Airspeed Velocity</span>
+</span><span class='line'><span class="n">func</span> <span class="nf">combineSuitsAndRanks</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">let</span> <span class="n">suits</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;♠︎&quot;</span><span class="p">,</span> <span class="s">&quot;♥︎&quot;</span><span class="p">,</span> <span class="s">&quot;♣︎&quot;</span><span class="p">,</span> <span class="s">&quot;♦︎&quot;</span><span class="p">]</span>
+</span><span class='line'>    <span class="n">let</span> <span class="n">ranks</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;J&quot;</span><span class="p">,</span><span class="s">&quot;Q&quot;</span><span class="p">,</span><span class="s">&quot;K&quot;</span><span class="p">,</span><span class="s">&quot;A&quot;</span><span class="p">]</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">rank</span> <span class="k">in</span> <span class="n">ranks</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">for</span> <span class="n">suit</span> <span class="k">in</span> <span class="n">suits</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">print</span><span class="p">(</span><span class="n">rank</span> <span class="o">+</span> <span class="n">suit</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>O(log n)</code> describes <em><em>logarithmic time</em></em>. An algorithm that can repeatedly subdivide the work in such a way that doubling the size of the data does not double the amount of work required to complete the algorithm. The commonly cited example of <code>O(log n)</code> is a binary search. Wayne Bishop&rsquo;s &ldquo;Swift Algorithms &amp; Data Structures.&rdquo; and Chris Eidhof and Airspeed Velocity&rsquo;s &ldquo;Advanced Swift&rdquo; both have great implementations of binary search in Swift.</p>
+
+<p>Knowing the performance characteristics of the code we write allows us to objectively evaluate and improve it. Big O can be a helpful tool for us to make decisions about our own code as well as 3rd party code that we use in our apps.</p>
+
+<p>There are many more examples of big O notation, <em><em>linearithmic time</em></em> <code>O(n log n)</code>, <em><em>cubic time</em></em> <code>O(n3)</code>, <em><em>exponential time</em></em> <code>2poly(n)</code>, <em><em>factorial time</em></em> <code>O(n!)</code>, <em><em>polylogarithmic time</em></em> <code>poly(log n)</code>, etc.</p>
+
+<p>See anything that looks wrong? Please let me know. I&rsquo;m intending to write a handful of posts about subjects that require me to do some research in order to write (semi) intellegently about them so I won&rsquo;t be sore if you correct my mistakes 😜.</p>
+
+<p>For more reading on big O notation checkout:</p>
+
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Big_O_notation">Wikipedia</a></li>
+<li><a href="http://waynewbishop.com/swift/">Swift Algorithms &amp; Data Structures.</a> by Wayne Bishop</li>
+<li><a href="https://justin.abrah.ms/computer-science/big-o-notation-explained.html">Big-O notation explained by a self-taught programmer</a></li>
+<li><a href="https://www.interviewcake.com/article/java/big-o-notation-time-and-space-complexity">Big O Notation Time and Space Complexity</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Sean Dougherty</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-05-31T11:39:00-06:00" pubdate data-updated="true">May 31<span>st</span>, 2016</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ios/'>iOS</a>, <a class='category' href='/blog/categories/swift/'>swift,</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://steam.github.io/blog/2016/05/31/big-o-notation/" data-via="sdougherty" data-counturl="http://steam.github.io/blog/2016/05/31/big-o-notation/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/12/31/more-functional-please/" title="Previous Post: More Functional Please">&laquo; More Functional Please</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+  <aside class="sidebar">
+   
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:steam.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+  
+    <section>  
+  <h1>About Me</h1>
+  <img src="/assets/sean.jpg">
+  <p>I am a mobile software engineer living in Denver Colorado. I spend my time writing code, mostly Swift, hanging out with my wife and 3 boys, injuring myself while running and coaching my kids' soccer teams.</p>
+	<p>I am currently the Mobile Lead working with the awesome folks at <a href="http://ello.co">Ello</a>.</p>
+</section>
+<section>
+  <div>
+    <p><br />Come say hi at Ello</p>
+    <p><iframe class='button' frameborder='0' border='0' scrolling='no' allowtransparency='true' height='40' width='40' src='https://button.ello.co/button?color=black&username=sean&size=large'></iframe></p>
+  </div>
+</section>
+
+<section>
+  <div>
+    <p><br /><a href="http://twitter.com/sdougherty">My Tweets, on Twitter.</a></p>
+    <a href="http://twitter.com/sdougherty" class="twitter-follow-button" data-show-count="">Follow @sdougherty</a>
+  </div>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/05/31/big-o-notation/">Big-O Notation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/12/31/more-functional-please/">More Functional Please</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/12/30/space-exploration/">Space Exploration</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/06/17/swift/">Swift</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/06/05/wwdc-2014/">WWDC 2014</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Sean Dougherty <br/>
+  This site is <a href="https://github.com/steam/steam.github.io">Open Source</a>, feel free to <a href="https://github.com/steam/steam.github.io/issues">open an issue</a> or submit a <a href="https://github.com/steam/steam.github.io/pulls">pull request</a>.
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+<script>
+  $(document).ready(function() {  
+  var stickyNavTop = $('nav').offset().top;  
+    
+  var stickyNav = function(){  
+  var scrollTop = $(window).scrollTop();  
+         
+  if (scrollTop > stickyNavTop) {   
+      $('nav').addClass('sticky');  
+  } else {  
+      $('nav').removeClass('sticky');   
+  }  
+  };  
+    
+  stickyNav();  
+    
+  $(window).scroll(function() {  
+      stickyNav();  
+  });  
+  });  
+</script>
+
+
+</body>
+</html>

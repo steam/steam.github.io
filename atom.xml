@@ -4,7 +4,7 @@
   <title><![CDATA[Sean Dougherty]]></title>
   <link href="http://steam.github.io/atom.xml" rel="self"/>
   <link href="http://steam.github.io/"/>
-  <updated>2016-05-31T08:19:14-06:00</updated>
+  <updated>2016-05-31T18:23:03-06:00</updated>
   <id>http://steam.github.io/</id>
   <author>
     <name><![CDATA[Sean Dougherty]]></name>
@@ -12,6 +12,106 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Big-O Notation]]></title>
+    <link href="http://steam.github.io/blog/2016/05/31/big-o-notation/"/>
+    <updated>2016-05-31T11:39:00-06:00</updated>
+    <id>http://steam.github.io/blog/2016/05/31/big-o-notation</id>
+    <content type="html"><![CDATA[<p>Any time a blog post, colleague or programming book uses big O notation I glance at it, record some general impression of the function/algorithm&rsquo;s performance and move on. I know that big O notation describes how the rate of computation time changes as the input size grows. Or more simply put, big O communicates the efficiency of a function. What I&rsquo;ve been missing are the specifics about how an algorithm&rsquo;s big O notation is calculated and when one algorithm is more preferable to another.</p>
+
+<p>Big O describes the efficiency of an algorithm when it operates on an arbitrarily large set of data and describe a &lsquo;worst case&rsquo; scenario. Often times the performance characteristics of an algorithm are different for smaller sets of data.</p>
+
+<p>At the most efficient end of the spectrum are <em><em>constant time</em></em> algorithms. These are functions that (basically) take the same amount of time regardless of the input size. Constant time is expressed as <code>O(1)</code>. The following example is a constant time function because hash-based lookups in Swift do not require enumeration over the entire collection.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="c1">// hash-based lookups on a swift dictionary are O(1) </span>
+</span><span class='line'><span class="n">func</span> <span class="n">age</span><span class="p">(</span><span class="nl">name:</span> <span class="n">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int</span><span class="o">?</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">let</span> <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;jane&quot;</span><span class="o">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s">&quot;john&quot;</span><span class="o">:</span> <span class="mi">25</span><span class="p">,</span> <span class="s">&quot;sam&quot;</span><span class="o">:</span> <span class="mi">19</span><span class="p">]</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">names</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Another very common notation is <em><em>linear time</em></em> which is represented as <code>O(n)</code>. A linear algorithm&rsquo;s execution time grows linearly with the size of it&rsquo;s input. This simple array lookup has a complexity of <code>O(n)</code> because it (potentially) requires enumerating the entire collection to produce a result.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="c1">// enumerating a simple swift array is O(n) </span>
+</span><span class='line'><span class="c1">// there are more efficient ways to write this code</span>
+</span><span class='line'><span class="n">func</span> <span class="n">ageFound</span><span class="p">(</span><span class="nl">age:</span> <span class="n">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Bool</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">let</span> <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">19</span><span class="p">]</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">value</span> <span class="k">in</span> <span class="n">values</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="n">age</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">true</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">false</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em><em>Quadratic time</em></em>, written as <code>O(n2)</code> describes an algorithm that grows quadratically. Increasing the input size by a single unit increases the workload by an order of magnitude. The easiest way to visualize <code>O(n2)</code> involves a loop nested in a loop. For each element in the outer loop the algorithm must loop through every element in the inner loop.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="c1">// printing out all the combinations of two arrays of strings is `O(n2)`</span>
+</span><span class='line'><span class="c1">// suits and ranks taken from the excellent book `Advanced Swift` by </span>
+</span><span class='line'><span class="c1">// Chris Eidhof and Airspeed Velocity</span>
+</span><span class='line'><span class="n">func</span> <span class="nf">combineSuitsAndRanks</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">let</span> <span class="n">suits</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;♠︎&quot;</span><span class="p">,</span> <span class="s">&quot;♥︎&quot;</span><span class="p">,</span> <span class="s">&quot;♣︎&quot;</span><span class="p">,</span> <span class="s">&quot;♦︎&quot;</span><span class="p">]</span>
+</span><span class='line'>    <span class="n">let</span> <span class="n">ranks</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;J&quot;</span><span class="p">,</span><span class="s">&quot;Q&quot;</span><span class="p">,</span><span class="s">&quot;K&quot;</span><span class="p">,</span><span class="s">&quot;A&quot;</span><span class="p">]</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">rank</span> <span class="k">in</span> <span class="n">ranks</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">for</span> <span class="n">suit</span> <span class="k">in</span> <span class="n">suits</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">print</span><span class="p">(</span><span class="n">rank</span> <span class="o">+</span> <span class="n">suit</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>O(log n)</code> describes <em><em>logarithmic time</em></em>. An algorithm that can repeatedly subdivide the work in such a way that doubling the size of the data does not double the amount of work required to complete the algorithm. The commonly cited example of <code>O(log n)</code> is a binary search. Wayne Bishop&rsquo;s &ldquo;Swift Algorithms &amp; Data Structures.&rdquo; and Chris Eidhof and Airspeed Velocity&rsquo;s &ldquo;Advanced Swift&rdquo; both have great implementations of binary search in Swift.</p>
+
+<p>Knowing the performance characteristics of the code we write allows us to objectively evaluate and improve it. Big O can be a helpful tool for us to make decisions about our own code as well as 3rd party code that we use in our apps.</p>
+
+<p>There are many more examples of big O notation, <em><em>linearithmic time</em></em> <code>O(n log n)</code>, <em><em>cubic time</em></em> <code>O(n3)</code>, <em><em>exponential time</em></em> <code>2poly(n)</code>, <em><em>factorial time</em></em> <code>O(n!)</code>, <em><em>polylogarithmic time</em></em> <code>poly(log n)</code>, etc.</p>
+
+<p>See anything that looks wrong? Please let me know. I&rsquo;m intending to write a handful of posts about subjects that require me to do some research in order to write (semi) intellegently about them so I won&rsquo;t be sore if you correct my mistakes 😜.</p>
+
+<p>For more reading on big O notation checkout:</p>
+
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Big_O_notation">Wikipedia</a></li>
+<li><a href="http://waynewbishop.com/swift/">Swift Algorithms &amp; Data Structures.</a> by Wayne Bishop</li>
+<li><a href="https://justin.abrah.ms/computer-science/big-o-notation-explained.html">Big-O notation explained by a self-taught programmer</a></li>
+<li><a href="https://www.interviewcake.com/article/java/big-o-notation-time-and-space-complexity">Big O Notation Time and Space Complexity</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[More Functional Please]]></title>
