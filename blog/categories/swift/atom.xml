@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Swift, | Sean Dougherty]]></title>
+  <title><![CDATA[Category: Swift | Sean Dougherty]]></title>
   <link href="http://steam.github.io/blog/categories/swift/atom.xml" rel="self"/>
   <link href="http://steam.github.io/"/>
-  <updated>2016-06-22T23:06:51-06:00</updated>
+  <updated>2016-06-23T09:26:53-06:00</updated>
   <id>http://steam.github.io/</id>
   <author>
     <name><![CDATA[Sean Dougherty]]></name>
@@ -14,674 +14,184 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Big-O Notation]]></title>
-    <link href="http://steam.github.io/blog/2016/05/31/big-o-notation/"/>
-    <updated>2016-05-31T11:39:00-06:00</updated>
-    <id>http://steam.github.io/blog/2016/05/31/big-o-notation</id>
-    <content type="html"><![CDATA[<p>Any time a blog post, colleague or programming book uses big O notation I glance at it, record some general impression of the function/algorithm&rsquo;s performance and move on. I know that big O notation describes how the rate of computation time changes as the input size grows. Or more simply put, big O communicates the efficiency of a function. What I&rsquo;ve been missing are the specifics about how an algorithm&rsquo;s big O notation is calculated and when one algorithm is more preferable to another.</p>
+    <title type="html"><![CDATA[Animate Between Competing Constraints]]></title>
+    <link href="http://steam.github.io/blog/2016/06/23/animate-between-competing-constraints/"/>
+    <updated>2016-06-23T08:27:00-06:00</updated>
+    <id>http://steam.github.io/blog/2016/06/23/animate-between-competing-constraints</id>
+    <content type="html"><![CDATA[<p>I recently learned a new approach to animating two competing <code>NSLayoutConstraint</code>&rsquo;s.</p>
 
-<p>Big O describes the efficiency of an algorithm when it operates on an arbitrarily large set of data and describe a &lsquo;worst case&rsquo; scenario. Often times the performance characteristics of an algorithm are different for smaller sets of data.</p>
+<p><strong>Problem</strong></p>
 
-<p>At the most efficient end of the spectrum are <em><em>constant time</em></em> algorithms. These are functions that (basically) take the same amount of time regardless of the input size. Constant time is expressed as <code>O(1)</code>. The following example is a constant time function because hash-based lookups in Swift do not require enumeration over the entire collection.</p>
+<p>Add a subview to a container and animate the subview from left to right using Auto Layout.</p>
 
-<p>```objective-c
-// hash-based lookups on a swift dictionary are O(1)
-func age(name: String) &ndash;> Int? {</p>
+<p><img src="/assets/layout-animation.gif" alt="Animating Box" /></p>
 
-<pre><code>let names = ["jane": 30, "john": 25, "sam": 19]
-return names[name]
+<p><strong>Solution</strong></p>
+
+<ol>
+<li>Pin the leading edge of the pink box to it&rsquo;s container. Set it&rsquo;s <code>priority</code> to 999.</li>
+<li>Pin the trailing edge of the pink box to it&rsquo;s container. Set it&rsquo;s <code>priority</code> to 998.</li>
+<li>Swap the priorities of the leading and trailing constraints in the animation block.</li>
+</ol>
+
+
+<p>```objective-c AnimatePinning.playground
+/<em>
+ Experiment that animates a red square left to right in a container
+ by swapping the priority of the left and right layout constraints
+</em>/</p>
+
+<p>import UIKit
+import XCPlayground</p>
+
+<p>let container = UIView(frame: CGRectZero)
+container.backgroundColor = .cyanColor()
+container.translatesAutoresizingMaskIntoConstraints = false</p>
+
+<p>let inner = UIView(frame: CGRectZero)
+inner.translatesAutoresizingMaskIntoConstraints = false
+inner.backgroundColor = .magentaColor()
+container.addSubview(inner)</p>
+
+<p>let innerWidth = NSLayoutConstraint(</p>
+
+<pre><code>item: inner,
+attribute: .Width,
+relatedBy: .Equal,
+toItem: nil,
+attribute: .NotAnAttribute,
+multiplier: 1.0,
+constant: 200)
 </code></pre>
 
-<p>}
-```</p>
+<p>let innerHeight = NSLayoutConstraint(</p>
 
-<p>Another very common notation is <em><em>linear time</em></em> which is represented as <code>O(n)</code>. A linear algorithm&rsquo;s execution time grows linearly with the size of it&rsquo;s input. This simple array lookup has a complexity of <code>O(n)</code> because it (potentially) requires enumerating the entire collection to produce a result.</p>
-
-<p>```objective-c
-// enumerating a simple swift array is O(n)
-// there are more efficient ways to write this code
-func ageFound(age: Int) &ndash;> Bool {</p>
-
-<pre><code>let values = [30, 25, 19]
-for value in values {
-    if value == age { 
-        return true 
-    }
-}
-return false
+<pre><code>item: inner,
+attribute: .Height,
+relatedBy: .Equal,
+toItem: nil,
+attribute: .NotAnAttribute,
+multiplier: 1.0,
+constant: 200)
 </code></pre>
 
-<p>}
-```</p>
+<p>let containerWidth = NSLayoutConstraint(</p>
 
-<p><em><em>Quadratic time</em></em>, written as <code>O(n2)</code> describes an algorithm that grows quadratically. Increasing the input size by a single unit increases the workload by an order of magnitude. The easiest way to visualize <code>O(n2)</code> involves a loop nested in a loop. For each element in the outer loop the algorithm must loop through every element in the inner loop.</p>
-
-<p><code>``objective-c
-// printing out all the combinations of two arrays of strings is</code>O(n2)<code>
-// suits and ranks taken from the excellent book</code>Advanced Swift` by
-// Chris Eidhof and Airspeed Velocity
-func combineSuitsAndRanks() {</p>
-
-<pre><code>let suits = ["♠︎", "♥︎", "♣︎", "♦︎"]
-let ranks = ["J","Q","K","A"]
-for rank in ranks {
-    for suit in suits {
-        print(rank + suit)
-    }
-}
+<pre><code>item: container,
+attribute: .Width,
+relatedBy: .Equal,
+toItem: nil,
+attribute: .NotAnAttribute,
+multiplier: 1.0,
+constant: 500)
 </code></pre>
 
-<p>}
-```</p>
+<p>let containerHeight = NSLayoutConstraint(</p>
 
-<p><code>O(log n)</code> describes <em><em>logarithmic time</em></em>. An algorithm that can repeatedly subdivide the work in such a way that doubling the size of the data does not double the amount of work required to complete the algorithm. The commonly cited example of <code>O(log n)</code> is a binary search. Wayne Bishop&rsquo;s &ldquo;Swift Algorithms &amp; Data Structures.&rdquo; and Chris Eidhof and Airspeed Velocity&rsquo;s &ldquo;Advanced Swift&rdquo; both have great implementations of binary search in Swift.</p>
-
-<p>Knowing the performance characteristics of the code we write allows us to objectively evaluate and improve it. Big O can be a helpful tool for us to make decisions about our own code as well as 3rd party code that we use in our apps.</p>
-
-<p>There are many more examples of big O notation, <em><em>linearithmic time</em></em> <code>O(n log n)</code>, <em><em>cubic time</em></em> <code>O(n3)</code>, <em><em>exponential time</em></em> <code>2poly(n)</code>, <em><em>factorial time</em></em> <code>O(n!)</code>, <em><em>polylogarithmic time</em></em> <code>poly(log n)</code>, etc.</p>
-
-<p>See anything that looks wrong? Please let me know. I&rsquo;m intending to write a handful of posts about subjects that require me to do some research in order to write (semi) intellegently about them so I won&rsquo;t be sore if you correct my mistakes 😜.</p>
-
-<p>For more reading on big O notation checkout:</p>
-
-<ul>
-<li><a href="https://en.wikipedia.org/wiki/Big_O_notation">Wikipedia</a></li>
-<li><a href="http://waynewbishop.com/swift/">Swift Algorithms &amp; Data Structures.</a> by Wayne Bishop</li>
-<li><a href="https://justin.abrah.ms/computer-science/big-o-notation-explained.html">Big-O notation explained by a self-taught programmer</a></li>
-<li><a href="https://www.interviewcake.com/article/java/big-o-notation-time-and-space-complexity">Big O Notation Time and Space Complexity</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[More Functional Please]]></title>
-    <link href="http://steam.github.io/blog/2014/12/31/more-functional-please/"/>
-    <updated>2014-12-31T10:43:00-07:00</updated>
-    <id>http://steam.github.io/blog/2014/12/31/more-functional-please</id>
-    <content type="html"><![CDATA[<p>Since starting the Ello iOS app I&rsquo;ve been writing Swift 99% of the time. Its not yet as natural as Objective-C to me but the benefits are obvious. A concise syntax with ALL types as first class citizens has removed a lot of the primitive/object song and dance required in Objective-C. I knew I&rsquo;d love Swift&rsquo;s syntax and type system. What I&rsquo;ve been surprised by, and excited by, are Swift&rsquo;s functional features. Most of the interesting exploration and writing about Swift has come from the Functional programming community. I have to admit that almost all of the functional programming concepts are new to me. Like most Objective-C developers I come from a world of strict object orientation and an imperative programming mindset.</p>
-
-<p>This new (to me) functional approach has opened up a world of new techniques and tools I&rsquo;m convinced will make my code easier to maintain and less error prone. The takeaway for me so far is that functional programming&rsquo;s primary benefit is removing as much concern about state as possible while focusing on the <strong>WHAT</strong> instead of the <strong>HOW</strong>.</p>
-
-<p>Managing state is one of the most common problems we encounter when building a reasonably sized application. It starts out simple at first. An instance variable here, another one over there. State instance variables are cheap and convenient. They help you solve an immediate problem and allow you to get back to the function or task at hand. The problem is that they introduce huge complexity as a system grows. Their intended usage and area of influence becomes unclear. A bit like the story of the boiling frog they add complexity little by little over time. Before you&rsquo;ve recognized it the application is in big trouble. The problem is that if they&rsquo;re not rigorously maintained they can add untold hours of development to the life of an application.</p>
-
-<p>Functional programming favors immutability over mutable objects. At first this seemed wasteful to me. Why create something new each time when I already have an available object. Turns out that the stability of data structures not changing is usually worth the small trade off of allocating a new one.</p>
-
-<p>I recently came across Rob Napier&rsquo;s slides from his talk <a href="https://speakerdeck.com/rnapier/llama-calculus">&ldquo;Introduction to functional programming in Swift&rdquo;</a> from CocoaConf Atlanta 2014. Its a great set of slides that I encourage you to read if you&rsquo;re interested in a more in depth look at functional concepts and motivations. The example below is a simple example of using Swift&rsquo;s <code>map</code> function in place of the traditional for loop.</p>
-
-<p>This code is a simplified version of code we have in the Ello app. Posts represent a user&rsquo;s post. Regions are sections of content in a post. Our goal is to create an array of <code>String</code> types, each containing the content for an individual region. Simple enough.</p>
-
-<p>```objective-c
-struct Region {
-  let content:String</p>
-
-<p>  init(content:String) {</p>
-
-<pre><code>  self.content = content
+<pre><code>item: container,
+attribute: .Height,
+relatedBy: .Equal,
+toItem: nil,
+attribute: .NotAnAttribute,
+multiplier: 1.0,
+constant: 300)
 </code></pre>
 
-<p>  }
-}</p>
+<p>let top = NSLayoutConstraint(</p>
 
-<p>struct Post {
-  let regions:[Region]</p>
-
-<p>  init(regions:[Region]) {</p>
-
-<pre><code>  self.regions = regions
+<pre><code>item: inner,
+attribute: .Top,
+relatedBy: .Equal,
+toItem: container,
+attribute: .Top,
+multiplier: 1.0,
+constant: 50
 </code></pre>
 
-<p>  }
-}</p>
+<p>)</p>
 
-<p>```</p>
+<p>/*
+ 1. Pin the leading edge of the pink box to it&rsquo;s container.</p>
 
-<p>An array of <code>strings</code> using the imperative for loop. We pass in an array of posts, loop over them, inner loop over their regions and append each region&rsquo;s content property to a temporary array and return it.</p>
-
-<p>This is slightly contrived and unlikely to appear in the wild (hopefully) but it illustrates the most imperative way we can solve the problem. Most of the syntax is focused on the <strong>how</strong>. We have three temporary variables <code>regions</code>, <code>i</code> and <code>j</code>, subscripting, lots of the machinery is exposed.</p>
-
-<p>```objective-c
-func regions(posts:[Post]) &ndash;> [String] {
-  var regions = <a href="">String</a>
-  for var i = 0; i &lt; posts.count; i++ {</p>
-
-<pre><code>  let post = posts[i]
-  for var j = 0; j &lt; post.regions.count; j++ {
-      let region = post.regions[j]
-      regions.append(region.content)
-  }
+<pre><code>Set it's `priority` to 999.
 </code></pre>
 
-<p>  }
-  return regions
-}</p>
+<p>*/
+let left = NSLayoutConstraint(</p>
 
-<p>```</p>
-
-<p>Lets solve the problem using Swift&rsquo;s <code>Array.map</code> function. <code>map</code> enumerates the array handing your function one element from the array. You do whatever you want with the element and hand back the type you specify as the return value. Here we map over posts and for each post in posts we map over it&rsquo;s regions. For each region we return it&rsquo;s <code>content</code> property. Notice the use of the <code>join</code> function. <code>join</code> is a handy function most commonly used to convert an array of strings into a single string. In this case we use it to turn an array of arrays into a flattened array.</p>
-
-<p>```objective-c
-func regions(posts:[Post]) &ndash;> [String] {
-  return join([],</p>
-
-<pre><code>  posts.map { post in
-      post.regions.map { $0.content }
-  })
+<pre><code>item: inner,
+attribute: .Leading,
+relatedBy: .Equal,
+toItem: container,
+attribute: .Leading,
+multiplier: 1.0,
+constant: 0
 </code></pre>
 
-<p>}</p>
+<p>)
+left.priority = 999</p>
 
-<p>```</p>
+<p>/*
+  2. Pin the trailing edge of the pink box to it&rsquo;s container.</p>
 
-<p>The functional approach uses no temporary variables and focuses on the <strong>what</strong> rather than the <strong>how</strong>. In this case it&rsquo;s more succinct as well.</p>
-
-<p>These concepts are definitely Functional Programming 101 (or maybe even a pre-requisite) but they&rsquo;re easily understandable and were my gateway drug into more sophisticated functional techniques. I&rsquo;m still a strong believer in object orientation and intend to remain one but functions like <code>map</code> are fantastic new tools we can use to make our Swift code more readable, safer and less error prone.</p>
-
-<p>I consider myself a n00b when it comes to functional thinking. Our backend counterparts in the ruby world have used these techniques for years. My goal is to find situations where I can challenge my existing mode of imperative problem solving with a functional approach. I&rsquo;m convinced my code will be more stable, more readable and more portable. Plus, this stuff is just plain fun.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Swift]]></title>
-    <link href="http://steam.github.io/blog/2014/06/17/swift/"/>
-    <updated>2014-06-17T08:12:00-06:00</updated>
-    <id>http://steam.github.io/blog/2014/06/17/swift</id>
-    <content type="html"><![CDATA[<p>This year was a big year for developers on Apple&rsquo;s platforms. Apple announced a ton of great stuff at <a href="/blog/2014/06/05/wwdc-2014">WWDC</a>. The most exciting news was their announcement of a new programming language, <a href="https://developer.apple.com/swift/">Swift</a>.</p>
-
-<p>According to Apple&rsquo;s free to download book <a href="https://itun.es/us/jEUH0.l"><strong><em>The Swift Programming Language</em></strong></a></p>
-
-<blockquote><p>&ldquo;Swift is a new programming language for iOS and OS X apps that builds on the best of C and Objective-C, without the constraints of C compatibility. Swift adopts safe programming patterns and adds modern features to make programming easier, more flexible, and more fun.&rdquo;</p></blockquote>
-
-<p>Swift is intended to be a near complete replacement for Objective-C, the language iOS and OS X apps are currently written in. While most of us love programming in Objective-C we realize that it has some rough edges. Objective-C has been around for decades and does not have a lot of the features and syntax more modern languages have introduced. Swift brings a host of modern features such as <a href="http://en.wikipedia.org/wiki/Generic_programming">generics</a>, <a href="http://en.wikipedia.org/wiki/Tuples">tuples</a>, <a href="http://en.wikipedia.org/wiki/Closure_(computer_programming)">closures</a>, <a href="http://en.wikipedia.org/wiki/Pattern_matching">pattern matching</a> and <a href="http://en.wikipedia.org/wiki/Type_inference">type inference</a> while remaining safe and most importantly, fast. Swift is compact and expressive which will lead to apps requiring less code and being easier to maintain.</p>
-
-<p>I predict that Swift&rsquo;s approachable and familiar syntax will lead to an influx of new Cocoa and Cocoa Touch developers. These new developers will bring new ideas to the platform. I can&rsquo;t wait to see what will happen over the next few years. We are going to move in directions we haven&rsquo;t yet conceived of. Its an exciting time to develop for iOS and OS X. As Mattt Thompson put it <a href="https://twitter.com/mattt/status/473557792331010048">&ldquo;How neat that we’re all beginners at the same time though, right?&rdquo;</a></p>
-
-<h2>Getting Started</h2>
-
-<p>Swift requires Xcode 6 beta which at the time of this writing is pre-release software. In order to download it you&rsquo;ll need to be a member of the iOS Developer Program or Mac Developer Program.</p>
-
-<p>Once you have Xcode 6 beta or later up and running you can start writing and compiling Swift.</p>
-
-<p>In an actual application deployed to iOS devices or a Mac Swift files have a <code>.swift</code> extension. They can be compiled along side Objective-C, C and Objective-C++ code. Objective-C code can use Swift classes (with some restrictions) and vice-a-versa.</p>
-
-<p>When conceiving Swift the authors at Apple had a goal of making learning Swift and trying out the language as easy, interactive and fun as possible. They named what they came up with Playgrounds.</p>
-
-<h3>Playgrounds</h3>
-
-<p>Playgrounds are files with a <code>.playground</code> extension. When opened in XCode 6 they launch an interactive environment for you to experiment with Swift code. Playgrounds are the quickest and easiest way to start writing Swift. They are a bit like Ruby&rsquo;s irb but much more powerful. Results are displayed immediately in a column on the right and through a powerful feature available in other areas of Xcode you are able to visualize several sophisticated types. It is even possible to see the results of values changing in your Swift code over time. There really is no way to do playgrounds justice here. You have to interact with one to understand how awesome they are.</p>
-
-<p>In fact, Apple has created a playground called &ldquo;GuidedTour.playground&rdquo; which is a comprehensive and interactive playground that goes through most of Swift&rsquo;s language features with descriptions and live examples that you can play with and modify on the fly. The iOS Developer Library has a <a href="https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/GuidedTour.html">Swift Tour</a> (you&rsquo;ll need a valid Apple developer account to access it). Click on <a href="/assets/Swift.playground.zip">Swift.playground.zip</a> to download a zip archive containing a playground file with all the code in this post.</p>
-
-<h3>Basics</h3>
-
-<h4>Everyone is a first class citizen in Swift</h4>
-
-<p>Strings, integers, doubles, classes, structs, enums and even functions are all valid types. Gone are the distinctions between primitives and objects. All types can be stored in collections and extended. The first classifying of all types provides a concise and uniform approach to developing in Swift.</p>
-
-<h4>Variables</h4>
-
-<p>Swift is able to infer type information in most cases so specifying it is not required if a value is assigned by the expression.</p>
-
-<p>```objective-c
-// Swift knows this is a string because the right hand value is a string
-var name = &ldquo;Walter&rdquo;</p>
-
-<p>// variable and constant types are specified after the name and a colon
-var lastName : String = &ldquo;White&rdquo;</p>
-
-<p>var age = 1 // inferred to Int</p>
-
-<p>var explictAge : Int = 1 // explicitly set to Int</p>
-
-<p>var count = 1.0 // inferred to Double</p>
-
-<p>var explicitCount : Double = 1 // force to an int</p>
-
-<p>```</p>
-
-<h4>Constants</h4>
-
-<p>The Swift documentation favors immutability so constants are highly visible in the language. Constants are indicated using the <code>let</code> keyword in place of <code>var</code>.</p>
-
-<p>```objective-c
-let immutableName = &ldquo;Walter&rdquo; // an immutable string constant</p>
-
-<p>// immutableName = &ldquo;Walter White&rdquo; // won&rsquo;t compile</p>
-
-<p>var mutableName = &ldquo;walter&rdquo; // a mutable string variable</p>
-
-<p>mutableName = &ldquo;Walter White&rdquo; // works</p>
-
-<p>```</p>
-
-<h4>String</h4>
-
-<p>Strings are concatenated with the <code>+</code> operator. They can be added to with the <code>+=</code> operator. Strings can also interpolate other calculated values using a backslash followed by the expression in parenthesis <code>\(expression)</code>.</p>
-
-<p>```objective-c
-var nameDescription = &ldquo;Walter&rdquo;
-nameDescription += &ldquo; White&rdquo; // name = &ldquo;Walter White&rdquo;</p>
-
-<p>let yearsOld = 50
-nameDescription += &ldquo; is (yearsOld) years old&rdquo; // name = &ldquo;Walter White is 50 years old&rdquo;</p>
-
-<p>```</p>
-
-<h4>Collections</h4>
-
-<p>Swift has several collection types. The most common are <code>Array</code> and <code>Dictionary</code>. Just like strings and the number types they are mutable if they are variables and immutable when they are constants.</p>
-
-<h4>Array</h4>
-
-<p>Arrays are typed in Swift.
-```objective-c
-var integers : Int[] = [1, 2, 3]
-integers += &ldquo;non integer&rdquo; // will not compile</p>
-
-<p>```</p>
-
-<p>If the type can be inferred the type information is not required at declaration time.</p>
-
-<p>```objective-c
-var characters = [&ldquo;Jesse&rdquo;, &ldquo;Walter&rdquo;, &ldquo;Hank&rdquo;] // inferred as an array of strings</p>
-
-<p>characters += &ldquo;Skyler&rdquo; // add a string to the array</p>
-
-<p>characters[2] // &ldquo;Hank&rdquo;</p>
-
-<p>```</p>
-
-<h4>Dictionary</h4>
-
-<p>```objective-c</p>
-
-<p>var states : Dictionary&lt;String, Int> = [</p>
-
-<pre><code>"Colorado" : 5000000,
-"Hawaii" : 1000000
+<pre><code> Set it's `priority` to 998.
 </code></pre>
 
-<p>]</p>
+<p> */
+let right = NSLayoutConstraint(</p>
 
-<p>var shows = [</p>
-
-<pre><code>"Walter" : "Science Teacher",
-"Jesse" : "Unemployed",
-"Hank" : "DEA Agent"
+<pre><code>item: inner,
+attribute: .Trailing,
+relatedBy: .Equal,
+toItem: container,
+attribute: .Trailing,
+multiplier: 1.0,
+constant: 0
 </code></pre>
 
-<p>] // type inferred to a key type String and value type String</p>
+<p>)
+right.priority = 998</p>
 
-<p>shows[&ldquo;Jesse&rdquo;] // &ldquo;Unemployed&rdquo;</p>
+<p>NSLayoutConstraint.activateConstraints([</p>
 
-<p>shows[&ldquo;Skyler&rdquo;] = &ldquo;Accountant&rdquo; // add an element to the dictionary</p>
+<pre><code>innerWidth,
+innerHeight,
+containerWidth,
+containerHeight,
+top,
+left,
+right
+</code></pre>
 
-<p>```</p>
+<p>])</p>
 
-<h4>Control Flow</h4>
+<p>// animate the inner square left &ndash;> right &ndash;> left
+// by swapping the left and right constraint priorities
+func animate() {</p>
 
-<p>Swift has most of the familiar mechanisms for controlling flow that Objective-C developers are familiar with. They&rsquo;re just a lot cooler and more useful in Swift.</p>
+<pre><code>UIView.animateWithDuration(1.0, animations: {
+    let prevRight = right.priority
+    let prevLeft = left.priority
 
-<p>```objective-c
-var registered = true</p>
+    /*
+      3. Swap the priorities of the two constraints
+         in the animation block
+    */
+    left.priority = prevRight
+    right.priority = prevLeft
+    container.layoutIfNeeded()
 
-<p>if registered {</p>
-
-<pre><code>// if statements do not require parenthesis
-// but they do require curly braces
+    }, completion: { if $0 { animate() }})
 </code></pre>
 
 <p>}</p>
 
-<p>// Swift has range types that are enumerable
-for number in 5&hellip;10 {</p>
+<p>animate()</p>
 
-<pre><code>println("\(number) plus \(number) is \(number + number)")
-</code></pre>
-
-<p>}</p>
-
-<p>let breakingBadCharacters = [&ldquo;Jesse&rdquo;, &ldquo;Walter&rdquo;, &ldquo;Hank&rdquo;]</p>
-
-<p>for character in breakingBadCharacters {</p>
-
-<pre><code>println("\(character)")
-</code></pre>
-
-<p>}</p>
-
-<p>// a string&rsquo;s characters are enumerable
-for letter in &ldquo;Breaking Bad&rdquo; {</p>
-
-<pre><code>println(letter)
-letter
-</code></pre>
-
-<p>}</p>
-
-<p>var funds = 0
-while funds &lt; 10 {</p>
-
-<pre><code>// cook meth until broke is false
-funds++
-</code></pre>
-
-<p>}</p>
-
-<p>do {</p>
-
-<pre><code>// cook meth at least once
-funds++
-</code></pre>
-
-<p>} while funds &lt; 100</p>
+<p>XCPlaygroundPage.currentPage.needsIndefiniteExecution = true
+XCPlaygroundPage.currentPage.liveView = container</p>
 
 <p>```</p>
-
-<p>Dictionaries are enumerable as a key value tuple pair. More on tuples below.</p>
-
-<p>```objective-c
-let cast = [</p>
-
-<pre><code>"Walter" : "Science Teacher",
-"Jesse" : "Unemployed",
-"Hank" : "DEA Agent"
-</code></pre>
-
-<p>]</p>
-
-<p>for (name, profession) in cast {</p>
-
-<pre><code>"\(name) is a \(profession)"
-</code></pre>
-
-<p>}</p>
-
-<p>```</p>
-
-<h4>Switch</h4>
-
-<p>The coolest and most powerful control flow mechanism in Swift is the switch statement. Swift&rsquo;s switch statement works with any type compared to Objective-C&rsquo;s integer only switching. Swift switch allows for pattern matching, a powerful feature new to iOS and OS X development.</p>
-
-<p>Switch statements must be exhaustive so a default is required if the case statements don&rsquo;t handle all possible cases. Execution does not fall through case statements so no <code>break</code> keyword is necessary.</p>
-
-<p>```objective-c
-let fullName = &ldquo;Walter White&rdquo;
-var output = &ldquo;&rdquo;</p>
-
-<p>switch fullName {
-case let x where countElements(fullName) > 3:</p>
-
-<pre><code>output = "more than 3 characters long"
-</code></pre>
-
-<p>case &ldquo;Jesse&rdquo;, &ldquo;Hank&rdquo;:</p>
-
-<pre><code>output = fullName
-</code></pre>
-
-<p>case let x where x.hasSuffix(&ldquo;White&rdquo;):</p>
-
-<pre><code>output = "ends in White"
-</code></pre>
-
-<p>default:</p>
-
-<pre><code>output = "no matches found"
-</code></pre>
-
-<p>}
-output // &ldquo;more than 3 characters long&rdquo;
-```</p>
-
-<h4>Functions</h4>
-
-<p>Functions are types just like everything else in Swift. You can define them, call them, as well as pass them as arguments to another function and return them from other functions. Functions are defined using the <code>func</code> keyword. They accept 0 or more arguments and may return a value. A function returns a value with a <code>-&gt;</code> and type after the parentheses.</p>
-
-<p>```objective-c
-func add(a:Int, b:Int) &ndash;> Int {</p>
-
-<pre><code>return a + b;
-</code></pre>
-
-<p>}</p>
-
-<p>let sum = add(5,7)</p>
-
-<p>sum // 12</p>
-
-<p>```</p>
-
-<p>In order to remain compatible with Cocoa and Cocoa Touch function arguments can have an external name as well as an internal variable name. Lets look at a <code>UITableViewDataSource</code> protocol method in both Objective-C and Swift.</p>
-
-<p>```objective-c
-// Objective-C
-&ndash; (UITableViewCell <em>)tableView:(UITableView </em>)tableView</p>
-
-<pre><code>     cellForRowAtIndexPath:(NSIndexPath *)indexPath;
-</code></pre>
-
-<p>// Swift
-// notice that the first argument does not have an external name
-// while the second argument is named cellForRowAtIndexPath externally
-// and indexPath internally
-func tableView(tableView: UITableView!,</p>
-
-<pre><code>cellForRowAtIndexPath indexPath: NSIndexPath!) -&gt; UITableViewCell!
-</code></pre>
-
-<p>```</p>
-
-<h3>The Cool New Hotness</h3>
-
-<p>The language features below are either completely new compared to Objective-C or they work in ways novel enough to note here.</p>
-
-<h4>Optionals</h4>
-
-<p>As I mentioned above, Swift is designed to be safe. Optionals help keep code safe by forcing the developer to be explicit about variables and constants. By default all variables and constants must have an assigned value. This ensures that it is safe to use variables and constants without first checking to see if they have a value. However, sometimes we&rsquo;ll need optional value variables or constants. This is where Swift Optionals come in. Optionals are a formal language feature that marks a variable or constant as potentially having no value. To mark a variable or constant as optional use a <code>?</code> after the type.</p>
-
-<p>```objective-c</p>
-
-<p>var content:String?</p>
-
-<p>func isDone() &ndash;> Bool? { return nil }</p>
-
-<p>func storeUserInfo(name:String?, age:Int?) {}</p>
-
-<p>```</p>
-
-<p>When using an optional variable or function with an optional return value we must explicitly unwrap the value held by the optional using a <code>!</code> after the referenced optional.</p>
-
-<p>```objective-c</p>
-
-<p>content = &ldquo;Some content here&rdquo;</p>
-
-<p>content // compile error</p>
-
-<p>println(content!) // compiles but may introduce a run time crash if content is nil</p>
-
-<p>if content {</p>
-
-<pre><code>println(content!) // safe because optionals are true if they have a value
-</code></pre>
-
-<p>}</p>
-
-<p>// automatic unwrapping with if let shorthand
-if let safeContent = content {</p>
-
-<pre><code>safeContent // preferred handling of optionals
-</code></pre>
-
-<p>}
-```</p>
-
-<h4>Tuples</h4>
-
-<p>Tuples are a group of compound values. To create a tuple enclose multiple values in parentheses. They can contain any number of values as well as any combination of types. The values can have names or not. Tuples are the mechanism for returning more than one value from a function. Access values in a tuple by position or name.</p>
-
-<p>```objective-c</p>
-
-<p>var ages = (10, 15, 20)</p>
-
-<p>ages.1 // 15</p>
-
-<p>func getNames() &ndash;> (tom:String, dick:String, harry:String) {</p>
-
-<pre><code>return ("Tom", "Dick", "Harry")
-</code></pre>
-
-<p>}</p>
-
-<p>let (tom, dick, harry) = getNames()</p>
-
-<p>harry // &ldquo;Harry&rdquo;</p>
-
-<p>getNames().dick // &ldquo;Dick&rdquo;</p>
-
-<p>```</p>
-
-<h4>Enums</h4>
-
-<p>Enums are useful for storing a known list of enumerable values. Swift enums support functions as well.</p>
-
-<p>```objective-c</p>
-
-<p>enum Framework {</p>
-
-<pre><code>case CocoaTouch, Rails, Android
-func language() -&gt; String {
-    switch self {
-    case .CocoaTouch:
-        return "Swift"
-    case .Rails:
-        return "Ruby"
-    case .Android:
-        return "Java"
-    }
-}
-</code></pre>
-
-<p>}
-let rails = Framework.Rails
-let railsLanguage = rails.language() // &ldquo;Ruby&rdquo;</p>
-
-<p>```</p>
-
-<h4>Structs</h4>
-
-<p>Structs are similar to classes in Swift with the distinction that they are immutable by default. They are copied when passed in code. Classes are passed by reference.</p>
-
-<p>```objective-c</p>
-
-<p>struct Programmer {</p>
-
-<pre><code>var name : String
-var framework : Framework
-
-func frameworkLanguage() -&gt; String {
-    return framework.language()
-}
-</code></pre>
-
-<p>}</p>
-
-<p>let cocoaProgrammer = Programmer(name:&ldquo;Sean&rdquo;, framework:.CocoaTouch)
-let frameworkLanguage = cocoaProgrammer.frameworkLanguage()
-```</p>
-
-<h4>Generics</h4>
-
-<p>Generics are a powerful tool for code reuse. They abstract code and provide flexibility while maintaing compile time type safety. Under the hood Swift uses generics for a host of the standard library features including collections like Array and Dictionary.</p>
-
-<p><a href="https://itun.es/us/jEUH0.l"><strong><em>The Swift Programming Language</em></strong></a> has a great example of generics. The example is a simple <code>Stack</code>. In order to make the stack work with with any type generics are used. The stack is type safe but flexible enough to hold any type.</p>
-
-<p>```objective-c</p>
-
-<p>struct Stack<T> {</p>
-
-<pre><code>var items = T[]()
-
-mutating func push(item: T) {
-    items.append(item)
-}
-
-mutating func pop() -&gt; T {
-    return items.removeLast()
-}
-</code></pre>
-
-<p>}</p>
-
-<p>var stackOfStrings = Stack<String>()
-stackOfStrings.push(&ldquo;uno&rdquo;)
-stackOfStrings.push(&ldquo;dos&rdquo;)
-stackOfStrings.push(&ldquo;tres&rdquo;)
-stackOfStrings.push(&ldquo;cuatro&rdquo;)
-// the stack now contains 4 strings</p>
-
-<p>stackOfStrings.push(123) // won&rsquo;t compile because 123 is not a String</p>
-
-<p>```</p>
-
-<h4>Extensions</h4>
-
-<p>Extensions allow you to add functionality to existing types. They are similar to Objective-C&rsquo;s categories and Ruby&rsquo;s Modules. Unlike an Objective-C category a Swift Extension can extend classes, structures and enums. Extensions can also add computed properties and add protocal conformance to an existing type. Extensions are available app wide at compile time.</p>
-
-<p>```objective-c</p>
-
-<p>extension Double {</p>
-
-<pre><code>func multiply(b:Double) -&gt; Double {
-    return self * b
-}
-</code></pre>
-
-<p>}</p>
-
-<p>5.5.multiply(3) // 16.5</p>
-
-<p>```</p>
-
-<h4>Protocols</h4>
-
-<p>Swift Protocols are similar to protocols in Objective-C but like their Extension counterparts they available on all types. Protocols are similiar to Java&rsquo;s Interfaces. When a type adopts a protocol it is conforming to a contract defined by the protocol. Protocols define optional or required functions and/or properties. The best new feature of protocols in Swift are protocol instance properties. Protocols do not define the implementation of their functions or properties, concrete types conforming to the protocol implement all required functions and properties.</p>
-
-<p>```objective-c</p>
-
-<p>protocol HighFiveable {</p>
-
-<pre><code>var numberOfHighFives: Int { get }
-
-func highFive()
-</code></pre>
-
-<p>}</p>
-
-<p>class Person: HighFiveable {</p>
-
-<pre><code>var numberOfHighFives = 20
-
-func highFive() {
-    println("I was high fived!")
-}
-</code></pre>
-
-<p>}</p>
-
-<p>let jim = Person()</p>
-
-<p>jim.highFive() // &ldquo;I was high fived!&rdquo;</p>
-
-<p>```</p>
-
-<h3>Summary</h3>
-
-<p>I&rsquo;ve included all of the code snippets above in a playground file you can download and open up in Xcode 6 beta or greater.</p>
-
-<p><a href="/assets/Swift.playground.zip">Swift.playground.zip</a></p>
-
-<p>This is just a brief look at some of the key language featuers of Apple&rsquo;s new programming language, Swift. Reach me on Twitter <a href="https://twitter.com/sdougherty">@sdougherty</a> if you find any errors or have anything to add.</p>
 ]]></content>
   </entry>
   

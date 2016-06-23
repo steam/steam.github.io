@@ -4,7 +4,7 @@
   <title><![CDATA[Category: iOS, | Sean Dougherty]]></title>
   <link href="http://steam.github.io/blog/categories/ios/atom.xml" rel="self"/>
   <link href="http://steam.github.io/"/>
-  <updated>2016-06-22T23:06:51-06:00</updated>
+  <updated>2016-06-23T09:26:53-06:00</updated>
   <id>http://steam.github.io/</id>
   <author>
     <name><![CDATA[Sean Dougherty]]></name>
@@ -12,6 +12,188 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Animate Between Competing Constraints]]></title>
+    <link href="http://steam.github.io/blog/2016/06/23/animate-between-competing-constraints/"/>
+    <updated>2016-06-23T08:27:00-06:00</updated>
+    <id>http://steam.github.io/blog/2016/06/23/animate-between-competing-constraints</id>
+    <content type="html"><![CDATA[<p>I recently learned a new approach to animating two competing <code>NSLayoutConstraint</code>&rsquo;s.</p>
+
+<p><strong>Problem</strong></p>
+
+<p>Add a subview to a container and animate the subview from left to right using Auto Layout.</p>
+
+<p><img src="/assets/layout-animation.gif" alt="Animating Box" /></p>
+
+<p><strong>Solution</strong></p>
+
+<ol>
+<li>Pin the leading edge of the pink box to it&rsquo;s container. Set it&rsquo;s <code>priority</code> to 999.</li>
+<li>Pin the trailing edge of the pink box to it&rsquo;s container. Set it&rsquo;s <code>priority</code> to 998.</li>
+<li>Swap the priorities of the leading and trailing constraints in the animation block.</li>
+</ol>
+
+
+<p>```objective-c AnimatePinning.playground
+/<em>
+ Experiment that animates a red square left to right in a container
+ by swapping the priority of the left and right layout constraints
+</em>/</p>
+
+<p>import UIKit
+import XCPlayground</p>
+
+<p>let container = UIView(frame: CGRectZero)
+container.backgroundColor = .cyanColor()
+container.translatesAutoresizingMaskIntoConstraints = false</p>
+
+<p>let inner = UIView(frame: CGRectZero)
+inner.translatesAutoresizingMaskIntoConstraints = false
+inner.backgroundColor = .magentaColor()
+container.addSubview(inner)</p>
+
+<p>let innerWidth = NSLayoutConstraint(</p>
+
+<pre><code>item: inner,
+attribute: .Width,
+relatedBy: .Equal,
+toItem: nil,
+attribute: .NotAnAttribute,
+multiplier: 1.0,
+constant: 200)
+</code></pre>
+
+<p>let innerHeight = NSLayoutConstraint(</p>
+
+<pre><code>item: inner,
+attribute: .Height,
+relatedBy: .Equal,
+toItem: nil,
+attribute: .NotAnAttribute,
+multiplier: 1.0,
+constant: 200)
+</code></pre>
+
+<p>let containerWidth = NSLayoutConstraint(</p>
+
+<pre><code>item: container,
+attribute: .Width,
+relatedBy: .Equal,
+toItem: nil,
+attribute: .NotAnAttribute,
+multiplier: 1.0,
+constant: 500)
+</code></pre>
+
+<p>let containerHeight = NSLayoutConstraint(</p>
+
+<pre><code>item: container,
+attribute: .Height,
+relatedBy: .Equal,
+toItem: nil,
+attribute: .NotAnAttribute,
+multiplier: 1.0,
+constant: 300)
+</code></pre>
+
+<p>let top = NSLayoutConstraint(</p>
+
+<pre><code>item: inner,
+attribute: .Top,
+relatedBy: .Equal,
+toItem: container,
+attribute: .Top,
+multiplier: 1.0,
+constant: 50
+</code></pre>
+
+<p>)</p>
+
+<p>/*
+ 1. Pin the leading edge of the pink box to it&rsquo;s container.</p>
+
+<pre><code>Set it's `priority` to 999.
+</code></pre>
+
+<p>*/
+let left = NSLayoutConstraint(</p>
+
+<pre><code>item: inner,
+attribute: .Leading,
+relatedBy: .Equal,
+toItem: container,
+attribute: .Leading,
+multiplier: 1.0,
+constant: 0
+</code></pre>
+
+<p>)
+left.priority = 999</p>
+
+<p>/*
+  2. Pin the trailing edge of the pink box to it&rsquo;s container.</p>
+
+<pre><code> Set it's `priority` to 998.
+</code></pre>
+
+<p> */
+let right = NSLayoutConstraint(</p>
+
+<pre><code>item: inner,
+attribute: .Trailing,
+relatedBy: .Equal,
+toItem: container,
+attribute: .Trailing,
+multiplier: 1.0,
+constant: 0
+</code></pre>
+
+<p>)
+right.priority = 998</p>
+
+<p>NSLayoutConstraint.activateConstraints([</p>
+
+<pre><code>innerWidth,
+innerHeight,
+containerWidth,
+containerHeight,
+top,
+left,
+right
+</code></pre>
+
+<p>])</p>
+
+<p>// animate the inner square left &ndash;> right &ndash;> left
+// by swapping the left and right constraint priorities
+func animate() {</p>
+
+<pre><code>UIView.animateWithDuration(1.0, animations: {
+    let prevRight = right.priority
+    let prevLeft = left.priority
+
+    /*
+      3. Swap the priorities of the two constraints
+         in the animation block
+    */
+    left.priority = prevRight
+    right.priority = prevLeft
+    container.layoutIfNeeded()
+
+    }, completion: { if $0 { animate() }})
+</code></pre>
+
+<p>}</p>
+
+<p>animate()</p>
+
+<p>XCPlaygroundPage.currentPage.needsIndefiniteExecution = true
+XCPlaygroundPage.currentPage.liveView = container</p>
+
+<p>```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Dependency Injection for Objective-C]]></title>
