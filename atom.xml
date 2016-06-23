@@ -4,7 +4,7 @@
   <title><![CDATA[Sean Dougherty]]></title>
   <link href="http://steam.github.io/atom.xml" rel="self"/>
   <link href="http://steam.github.io/"/>
-  <updated>2016-05-31T18:23:03-06:00</updated>
+  <updated>2016-06-22T23:06:51-06:00</updated>
   <id>http://steam.github.io/</id>
   <author>
     <name><![CDATA[Sean Dougherty]]></name>
@@ -12,6 +12,20 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Open Sourcing Ello's iOS App]]></title>
+    <link href="http://steam.github.io/blog/2016/06/22/open-sourcing-ellos-ios-app/"/>
+    <updated>2016-06-22T22:50:00-06:00</updated>
+    <id>http://steam.github.io/blog/2016/06/22/open-sourcing-ellos-ios-app</id>
+    <content type="html"><![CDATA[<p>A couple weeks ago we open sourced <a href="https://github.com/ello/ello-ios">Ello&rsquo;s iOS App</a>.</p>
+
+<blockquote><p>The iOS app constitutes the largest codebase in the Ello ecosystem right now &ndash; at 57,391 lines of Swift, it just barely edges out the 55,911 lines of Ruby in our Rails backend, and it’s almost twice as big as the 29,827 lines of JS in our React webapp.</p></blockquote>
+
+<p>We&rsquo;ve wanted to do this for many months and finally found the time to get the repository into public form. I hope it&rsquo;s as useful of a resource for others as the other great open source projects have been for me. Jay Zeschin and I posted about it on Ello today. You can read the full post here:
+<a href="https://ello.co/sean/post/eobkyhj79p8yzol7it_1ew">https://ello.co/sean/post/eobkyhj79p8yzol7it_1ew</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Big-O Notation]]></title>
