@@ -9,7 +9,7 @@
   <meta name="author" content="Sean Dougherty">
 
   
-  <meta name="description" content="I recently learned a new approach to animating two competing NSLayoutConstraint&rsquo;s. Problem Add a subview to a container and animate the subview &hellip;">
+  <meta name="description" content="No really, I suck at git. Give me too much rope and, well, you know&hellip; The other day, at work, I got myself into GIT trouble. This happens once &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -71,6 +71,72 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/10/02/i-suck-at-git/">I Suck at Git</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-10-02T21:57:00-06:00" pubdate data-updated="true">Oct 2<span>nd</span>, 2016</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>No really, I <strong><em>suck</em></strong> at git.</h2>
+
+<h4>Give me too much rope and, well, you know&hellip;</h4>
+
+<p>The other day, at work, I got myself into GIT trouble. This happens once or twice a year. I&rsquo;ll get clever, attempt something above my git pay grade, foul things up royally, and eventually call in an expert. Often times this is Jay. In this case it was my co-worker Colin.</p>
+
+<h4>What did my git fat fingers screw up?</h4>
+
+<p>I&rsquo;m so glad you asked. Apple recently released Xcode 8. A requirement of using Swift and Xcode 8 (out of the box) is that your code must be Swift 2.3 or Swift 3.0. Up until the move to Xcode 8 Ello&rsquo;s iOS codebase was written in Swift 2.2, the production version of Swift. Like a good git citizen, I created a topic branch from <code>master</code> named <code>sd/swift-2-dot-3</code>. Brilliant. No problems yet.</p>
+
+<p>The conversion of over 50k lines of Swift 2.2 to Swift 2.3 ended up being a bigger task than originally planned. Not entirely surprising but we we had other &ldquo;real&rdquo; work to do. We decided to branch off of <code>sd/swift-2-dot-3</code> for all feature work happening at the same time. For example, when adding <strong>Awesome Widget</strong> we&rsquo;d simply <code>git co sd/swift-2-dot-3</code> followed with <code>git co -b sd/feature/awesome-widget</code>. No big deal. The problem came when we needed to push a hot fix for a bug found on a version of the app that was based off of the Swift 2.2 <code>master</code> branch. We made the change, submitted a build to the AppStore and continued working on Swift 2.3 features.</p>
+
+<p>The problem came when I decided to <code>rebase</code> the hot fix in <code>master</code> onto <code>sd/swift-2-dot-3</code>. Bad Sean. I&rsquo;ve been told by many people, Colin included, that I should not be rebasing. Ever. I like rebasing because I want my commits to come after all the vetted commits in <code>master</code>.</p>
+
+<p>Folks like Colin say that rebasing is not in the spirit of git and I&rsquo;m pretty sure he sent me a Linus Torvalds rant echoing the same. Spirit schmirit. The other argument for not rebasing anything public, and the one that actually matters to me, is that it can create an ungodly mess. I now agree with this wholeheartedly.</p>
+
+<h4>Back to my blunder.</h4>
+
+<p>The negative effects of my rebasing <code>master</code> onto <code>sd/swift-2-dot-3</code> branch were not immediately apparent. We eventually merged several GitHub pull requests into <code>sd/swift-2-dot-3</code> and planned to distribute an internal TestFlight build of the app. Before I sent it live Colin messaged me in Slack &ldquo;Sean, can you push <code>master</code>? because according to github, it&rsquo;s missing tons of commits.&rdquo; I hadn&rsquo;t even noticed.</p>
+
+<p>The issue ended up being (we think) that Github&rsquo;s pull requests (a GitHub feature, not a git feature) lock the base branch to merge into directly to an individual commit, not to the branch. Rebasing <code>master</code> into <code>sd/swift-2-dot-3</code> does not change the commit that <code>My Awesome Pull Request</code> will be merged into if the pull request was created prior to the rebase. This should have been obvious but it wasn&rsquo;t. The pull request merge will continue to be merged into the original commit associated with the base branch <code>sd/swift-2-dot-3</code> in this case. It will not be merged into the completely rewritten commit history of <code>sd/swift-2-dot-3</code> as it exists after the rebase. It gets merged into a commit that is no longer relevant to the rebased branch. This effectively orphans the merge.</p>
+
+<h3>Moral of the story</h3>
+
+<p>Don&rsquo;t rebase anything other people are working with. Especially don&rsquo;t rebase onto a branch that has other branches off of it. You&rsquo;ll feel stupid and make a ton of extra work for yourself, or for Colin since he is the one who will inevitably end up fixing it for you when you stare at your screen in horror.</p>
+
+<h3>How to fix it?</h3>
+
+<p><a href="https://git-scm.com/docs/git-cherry-pick"><code>git cherry-pick</code></a> is your friend here. We ended up identifying each missing commit and cherry picked them (in original order) from their original branches into a new branch created from <code>master</code> which had the merged <code>sd/swift-2-dot-3</code> code, submitting a new <a href="https://github.com/ello/ello-ios/pull/156">PR</a>.</p>
+
+<p>I&rsquo;ve fought Colin on the whole &ldquo;rebase vs merge&rdquo; debate for a long time. I took my licks on this one.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2119,113 +2185,9 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/05/22/ios-data-security/">iOS Data Security</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-22T13:56:00-06:00" pubdate data-updated="true">May 22<span>nd</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>On a recent client project we had the need to research the encryption/security features available to iOS applications. This is a modified write-up of our findings. Special thanks to Jay Zeschin <a href="https://twitter.com/jayzes">@jayzes</a> at <a href="http://modeset.com/">Mode Set</a> for editing the original draft I wrote.</p>
-
-<p>There are several layers of security that affect a user’s data when using an iOS app &ndash; security at rest on the server, security in transit over the network, and security on the iOS device. Focusing on the iOS device only for now, there are several scenarios that are of primary concern: while a user is actively using the app, while a user not actively using the app, when data is stored on disk, and when data is present in memory (RAM). In addition, there are security concerns inherent in ancillary processes such as backing up a device (via iTunes or iCloud) or migrating data to separate devices (e.g. when a user gets a new phone).</p>
-
-<p>While it is impossible to protect user data 100% in all scenarios, there are a number of options available that provide increasing levels of security and protection. Each additional measure of security has advantages and drawbacks, and comes with some measure of added time and effort during the development process.</p>
-
-<h3>1. Built-in Data Protection</h3>
-
-<p>Starting with iOS 4, Apple added operating-system level data security provisions and made them available to app developers. In short, if an app developer chooses to make use of these protections and an app user enables a passcode on their device, all data stored to the device by that app is transparently encrypted and protected from unauthorized access by anyone (including the user) when the device is locked, protecting it while at rest. Technically, this is implemented with a tiered system of encrypted keys called keybags, the last of which is based directly off the user’s passcode. When the passcode is entered and the phone is unlocked, all application data is available and unencrypted.</p>
-
-<p>This built-in protection scheme is what Apple makes use of internally for their own apps (such as Mail). It’s a great option and requires very little development time to integrate, so we strongly recommend using it. Any strategy we choose should, at minimum, include this security measure.</p>
-
-<h4>Pros:</h4>
-
-<ul>
-<li>Hardware-keyed and transparent encryption of user data</li>
-<li>Follows industry standard practices</li>
-<li>Integrated at the operating-system level</li>
-<li>Architected, developed and supported by Apple</li>
-</ul>
-
-
-<h4>Cons:</h4>
-
-<ul>
-<li>Requires the user to have a passcode enabled on their device to offer any sort of data protection value</li>
-<li>Apps are unable to programmatically ascertain whether a user has enabled a device passcode (a relatively recent change), which prevents apps from being able to prompt users or limit functionality to guarantee that data is protected. See more about this in the “Recommendations” section below.</li>
-</ul>
-
-
-<h3>2. Adding a Second Level of Protection</h3>
-
-<p>The two cons of built-in data protection are significant limitations, and due to the low level integration of those built-in protections into the operating system, it is difficult if not impossible to augment them directly. For that reason, it is often necessary to implement additional protection of sensitive data at a higher level. Several industry tested code libraries exist for this purpose, most notably <a href="http://sqlcipher.net/">SQLCipher</a>. These libraries encrypt the data contained in the database files before they are written to disk, in contrast to Apple’s approach of encrypting the file itself.</p>
-
-<h4>Pros:</h4>
-
-<ul>
-<li>Offers additional protection on top of Apple’s basic security</li>
-<li>Data is encrypted and secure even when the device does not have a passcode</li>
-<li>Ability to customize/control protection and related user interactions within the app</li>
-</ul>
-
-
-<h4>Cons:</h4>
-
-<ul>
-<li>Time consuming to implement, requiring structural changes to the existing data model</li>
-<li>Requires introducing a strategy for encryption key management</li>
-<li>Introduces an overhead for management/maintenance on future feature work</li>
-</ul>
-
-
-<h3>3. Removing Sensitive Data From Memory</h3>
-
-<p>When data is actively in-use by an application it is stored in RAM, a volatile physical location on the device. Depending on the specific use case, some kinds of data are created, accessed, and destroyed all solely in RAM. Other data (downloaded images or data from a local database, for example) is read from disk and stored in RAM. Data stored in this way is necessarily unencrypted and inherently temporary &ndash; it is created by the device as needed and discarded when the app is no longer running. However, the way that Apple has architected iOS means that applications may continue to run and be resident in memory when they are in the background, sometimes for days or weeks on end. While it would take a much more concentrated hacking effort, it is technically possible to access data belonging to a running app from memory. Securing this data requires purging all sensitive data from memory when a screen is hidden or the application goes into the background &ndash; a process that involves a very careful line-by-line audit of an app and how data is created and stored.</p>
-
-<h4>Pros:</h4>
-
-<ul>
-<li>Combined with the previous steps, this is the most secure form of data protection</li>
-<li>It is much more difficult to exploit a running application with this level of protection</li>
-</ul>
-
-
-<h4>Cons:</h4>
-
-<ul>
-<li>Extremely time consuming to implement</li>
-<li>Requires close scrutiny of every line of code in the app</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="/blog/page/2/">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -2265,6 +2227,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/10/02/i-suck-at-git/">I Suck at Git</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/06/23/animate-between-competing-constraints/">Animate Between Competing Constraints</a>
       </li>
     
@@ -2278,10 +2244,6 @@
     
       <li class="post">
         <a href="/blog/2014/12/31/more-functional-please/">More Functional Please</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/12/30/space-exploration/">Space Exploration</a>
       </li>
     
   </ul>
