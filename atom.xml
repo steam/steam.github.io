@@ -4,7 +4,7 @@
   <title><![CDATA[Sean Dougherty]]></title>
   <link href="http://steam.github.io/atom.xml" rel="self"/>
   <link href="http://steam.github.io/"/>
-  <updated>2016-10-02T23:15:53-06:00</updated>
+  <updated>2016-10-02T23:19:31-06:00</updated>
   <id>http://steam.github.io/</id>
   <author>
     <name><![CDATA[Sean Dougherty]]></name>
@@ -28,7 +28,13 @@
 
 <p>I&rsquo;m so glad you asked. Apple recently released Xcode 8. A requirement of using Swift and Xcode 8 (out of the box) is that your code must be Swift 2.3 or Swift 3.0. Up until the move to Xcode 8 Ello&rsquo;s iOS codebase was written in the production version of Swift, 2.2, . Like a good git citizen, I created a topic branch from <code>master</code> named <code>sd/swift-2-dot-3</code>. Brilliant. No problems yet.</p>
 
-<p>The conversion of over 50k lines of Swift 2.2 to Swift 2.3 ended up being a bigger task than originally planned. Not entirely surprising but we had other &ldquo;real&rdquo; work to do. We decided to branch off of <code>sd/swift-2-dot-3</code> for all feature work happening at the same time. For example, when adding <strong>Awesome Widget</strong> we&rsquo;d simply <code>git co sd/swift-2-dot-3</code> followed with <code>git co -b sd/feature/awesome-widget</code>. No big deal. During the conversion process we needed to push a hot fix for a bug found on a version of the app that was based off of the Swift 2.2 <code>master</code> branch. We made the change, submitted a build to the AppStore and continued working on Swift 2.3 features.</p>
+<p>The conversion of over 50k lines of Swift 2.2 to Swift 2.3 ended up being a bigger task than originally planned. Not entirely surprising but we had other &ldquo;real&rdquo; work to do. We decided to branch off of <code>sd/swift-2-dot-3</code> for all feature work happening at the same time. For example, when adding <strong>Awesome Widget</strong> we&rsquo;d simply <code>git co sd/swift-2-dot-3</code> followed with <code>git co -b sd/feature/awesome-widget</code>.</p>
+
+<h4>No big deal.</h4>
+
+<p>During the conversion process we needed to push a hot fix for a bug found on a version of the app that was based off of the Swift 2.2 <code>master</code> branch. We made the change, submitted a build to the AppStore and continued working on Swift 2.3 features.</p>
+
+<h4>Horror</h4>
 
 <p>The problem came when I decided to <code>rebase</code> the hot fix in <code>master</code> onto <code>sd/swift-2-dot-3</code>. Bad Sean. I&rsquo;ve been told by many people, Colin included, that I should not be rebasing. Ever. I like rebasing because I want my commits to come after all the vetted commits in <code>master</code>.</p>
 
@@ -54,9 +60,7 @@
 
 <p><a href="https://git-scm.com/docs/git-cherry-pick"><code>git cherry-pick</code></a> is your friend here. We ended up identifying each missing commit and cherry picked them (in original order) into a new branch created from <code>master</code> which had the merged <code>sd/swift-2-dot-3</code> code. Then we submitted a new <a href="https://github.com/ello/ello-ios/pull/156">PR</a> for all of the open-source world to see :).</p>
 
-<p>I&rsquo;ve fought Colin on the whole &ldquo;rebase vs merge&rdquo; debate for a long time. I took my licks on this one.</p>
-
-<p>I have a few other git-gotchas to talk about in the future. Believe it or not, this is not my first (or last) time sucking at git.</p>
+<p>I&rsquo;ve fought Colin on the whole &ldquo;rebase vs merge&rdquo; debate for a long time. I took my licks on this one. I have a few other git-gotchas to talk about in the future. Believe it or not, this is not my first (or last) time sucking at git.</p>
 ]]></content>
   </entry>
   
