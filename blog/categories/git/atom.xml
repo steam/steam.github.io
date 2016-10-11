@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Git | Sean Dougherty]]></title>
   <link href="http://steam.github.io/blog/categories/git/atom.xml" rel="self"/>
   <link href="http://steam.github.io/"/>
-  <updated>2016-10-10T23:02:37-06:00</updated>
+  <updated>2016-10-10T23:07:58-06:00</updated>
   <id>http://steam.github.io/</id>
   <author>
     <name><![CDATA[Sean Dougherty]]></name>
@@ -18,11 +18,11 @@
     <link href="http://steam.github.io/blog/2016/10/10/fixing-a-commit-to-the-wrong-branch/"/>
     <updated>2016-10-10T22:16:00-06:00</updated>
     <id>http://steam.github.io/blog/2016/10/10/fixing-a-commit-to-the-wrong-branch</id>
-    <content type="html"><![CDATA[<p>In my last post <a href="http://seancdougherty.com/blog/2016/10/02/i-suck-at-git/">&ldquo;I Suck at Git&rdquo;</a> I mentioned that I&rsquo;d post some other git-gotchas in the future. I love this workflow, courtesy of Colin, my goto for all things git.</p>
+    <content type="html"><![CDATA[<p>In my last post <a href="http://seancdougherty.com/blog/2016/10/02/i-suck-at-git/">I Suck at Git</a> I mentioned that I&rsquo;d post some other git-gotchas in the future. I love this workflow, courtesy of Colin, my goto for all things git.</p>
 
 <p>Have you ever made changes to files in an existing git project, committed them, and realized you intended to commit the changes to a different branch?</p>
 
-<h2>I have.</h2>
+<h3>I have</h3>
 
 <p>Here is the scenario. At Ello, we use a simple branching model. You&rsquo;re probably familar with it. <code>master</code> is kept clean, ideally only production ready code sees the light of <code>master</code>. When working on bug fixes or features we create topic or feature branches. A typical flow starts with a fresh pull from master.</p>
 
