@@ -9,7 +9,7 @@
   <meta name="author" content="Sean Dougherty">
 
   
-  <meta name="description" content="No really, I suck at git. Give me too much rope and, well, you know&hellip; The other day, at work, I got myself into GIT trouble. This happens once &hellip;">
+  <meta name="description" content="In my last post &ldquo;I Suck at Git&rdquo; I mentioned that I&rsquo;d post some other git-gotchas in the future. I love this workflow, courtesy of &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -71,6 +71,112 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/10/10/fixing-a-commit-to-the-wrong-branch/">Fixing a Commit to the Wrong Branch</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-10-10T22:16:00-06:00" pubdate data-updated="true">Oct 10<span>th</span>, 2016</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In my last post <a href="http://seancdougherty.com/blog/2016/10/02/i-suck-at-git/">&ldquo;I Suck at Git&rdquo;</a> I mentioned that I&rsquo;d post some other git-gotchas in the future. I love this workflow, courtesy of Colin, my goto for all things git.</p>
+
+<p>Have you ever made changes to files in an existing git project, committed them, and realized you intended to commit the changes to a different branch?</p>
+
+<h2>I have.</h2>
+
+<p>Here is the scenario. At Ello, we use a simple branching model. You&rsquo;re probably familar with it. <code>master</code> is kept clean, ideally only production ready code sees the light of <code>master</code>. When working on bug fixes or features we create topic or feature branches. A typical flow starts with a fresh pull from master.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git co master
+</span><span class='line'>git pull</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Followed by creating a feature branch.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git co -b sd/feature/make-america-great-again</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next, all the code that Makes America Great Again is written, the tests are written, they&rsquo;re submitted as a pull-request, reviewed, updated, and finally submitted for acceptance testing, approved and merged.</p>
+
+<p>This is the typical flow. It works great. Most of the time.</p>
+
+<p>But what if someone (finger pointed at myself) gets a little ahead of himself and forgets to create a topic/feature branch? What if they write some <em>tremendous</em> code and immediately commit it directly to master?</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git co master
+</span><span class='line'>git pull
+</span><span class='line'>... write some tremendous code
+</span><span class='line'>git add ... tremendous code
+</span><span class='line'>git commit -m "adds tremendous code"
+</span><span class='line'>... write more amazing code
+</span><span class='line'>git add ... amazing code
+</span><span class='line'>git commit -m "adds amazing code"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After realizing that there are two commits in master that I intended to commit to <code>sd/feature/make-america-great-again</code> I need to fix things. It turns out that the fix is pretty simple. There are several approaches to the problem but I really like this one.</p>
+
+<ol>
+<li>create a new branch</li>
+<li>checkout master</li>
+<li><code>git reset HEAD~</code> the requisite number of times</li>
+<li>move on with your life</li>
+</ol>
+
+
+<p>After executing the offending commits.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git co -b sd/feature/make-america-great-again
+</span><span class='line'>git co master
+</span><span class='line'>git reset HEAD~ // undoes the most recent commit, leaving the modified changes on disk
+</span><span class='line'>git reset HEAD~ // undoes the next commit, leaving the modified changes on disk
+</span><span class='line'>... do what you want, git stash is a reasonable idea
+</span><span class='line'>git co sd/feature/make-america-great-again // now you have the commits on the originally intended branch</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Crisis overted. Thats pretty much it. You&rsquo;re now in the position you inteded to be in the first place. Working on a feature branch, having commited a couple of changes. No harm, no foul.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2127,76 +2233,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/05/17/android-vs-ios-from-an-ios-developers-perspective/">Android vs iOS From an iOS Developer&#8217;s Perspective</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-05-17T15:48:00-06:00" pubdate data-updated="true">May 17<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Over the last month or so I&rsquo;ve been spending my days learning Java and Android development. As an iPhone user I find myself trying to make sense of Android apps through the lens of years of iPhone use. I realized that I needed to be a real Android user. Much to the dismay of most people who know me I visited the Google Play store and bought a Nexus 5. After receiving the Nexus I went to AT&amp;T to get a micro-SIM and I made the switch.</p>
-
-<h3>Observations</h3>
-
-<p>The first surprise was the price. Unlocked, no contract, no carrier commitment: $350. The last time I purchased an unlocked iPhone it set me back $950. Why are Android devices so inexpensive?</p>
-
-<p>The second surprise was the quality of the software experience. I&rsquo;ve had various Android devices over the years for testing purposes but they all seemed cheap and clunky. The Nexus 5 runs vanilla KitKat and it is years beyond older versions in every way. I liked the lack of manufacturer kludge as well. My Samsung Galaxy S2 testing phone was highly customized by Samsung and felt clunky. Vanilla KitKat comes close to matching iOS 7&rsquo;s finish in many areas and <gasp> surpasses it in many others. Gone are the days of Android trailing far behind iOS in functionality and experience. KitKat is polished and mature feeling.</p>
-
-<p>Most of the apps I use on a daily basis, Spotify, Twitter, Facebook, Circa, Pocket, Fliboard, Zite and NPR News are all first class citizens on Android. Aside from a hellish logging-in-to-all-the-things experience my digital life ported over nicely. The Gmail app worked great. Hangouts was mildly confusing but ultimately worked well for texts and instant messaging. The experience also gave me the excuse to move my wife&rsquo;s calendar and my calendar from iCloud over to Google Calendar. Since we both use Gmail it was something I&rsquo;d been meaning to do for awhile.</p>
-
-<h3>Love</h3>
-
-<p>The best feature of Android is the back button. Navigating between apps is seamless. Its hard to explain this feature to an iPhone user. It doesn&rsquo;t sound that sexy but oh man, it is sexy. The flow of jumping from one app to another and tapping back to jump between apps is such a better flow than the iPhone&rsquo;s app switching. It just feels more natural and useful.</p>
-
-<p>Another feature of the Nexus that I loved was the screen size. At just under 5&#8221; the screen is big and beautiful. The full 1080p screen has room for much more content then an iPhone 5s. I hope the rumors are true about larger iPhones coming this fall.</p>
-
-<p>Google clearly excels at cloud services. The thoroughness and reliability of their offering is impressive. Their services cover almost all possible needs and are available everywhere. The portability of using Google&rsquo;s services over Apple&rsquo;s gated ecosystem is attractive. Gmail, Google Drive and Hangouts are as reliable as anything else out there and considerably more reliable than Apple&rsquo;s several attempts at cloud based services.</p>
-
-<p>Google Now was a nice surprise. It is integrated directly into the OS and is incredibly useful. Being able to configure Google Now along with it&rsquo;s learned behavior made my experience with the device personal and contextual.</p>
-
-<p>Android has the concept of widgets, small subsets of an app&rsquo;s features that are installable on the phone&rsquo;s home screens. The two widgets I actually used displayed the current weather and another that launched a specific Dropbox folder. Due to a great architectural decision in Android it is possible to deep link into apps all the time. Deep linking is a must have feature for future version&rsquo;s of iOS. The productivity gains from going directly to the area of an app you need are huge.</p>
-
-<h3>Hate</h3>
-
-<p>While the Android Apps I used had come a long way since they were first introduced some aspects of the experience felt less refined than on iOS. For example, the lack of rubber banding on scrolling lists felt off and unnatural.</p>
-
-<p>The first pain point came when I stopped receiving &ldquo;texts&rdquo; from all my iPhone friends. These were of course iMessages and Apple&rsquo;s servers failed to release my phone number and start sending standard sms texts instead of iMessage. While not a problem caused by Android this drove me insane. I have several Apple products connected to iMessage; my mac book pro, multiple iPads and my iPhone 5s. Turning off iMessage for my phone number did not fix the problem. Apparently I am not the only one who has had to deal with this: <a href="http://adampash.com/imessage-purgatory/">iMessage purgatory</a>.</p>
-
-<p>After the whole text/iMessage fiasco (Apple&rsquo;s fault for sure) the next biggest challenge was visual voicemail. AT&amp;T has an Android App for visual voicemail. Despite a good hour of trying and another hour on the phone with AT&amp;T I never got visual voicemail working. Its amazing how fast certain features become expected. Using a smartphone to call and retreive my voicemails felt antiquated and frustrating. Android users have since told me that Google Voice is the best app to use for visual voicemail. I never tried it unfortunately.</p>
-
-<h3>Conclusion</h3>
-
-<p>I found the entire experience to be less cohesive than iOS. I&rsquo;m not sure if the problem is too much choice or if it is just a maturity issue but I didn&rsquo;t open the box, turn it on and have a smooth, working smart phone. The experience was impressive and the phone was beautiful but somehow the combination of all the parts did not add up to something greater than the whole. Apple consistently nails this.</p>
-
-<p>How long did I use the Nexus 5 as my primary phone? 5 days. I&rsquo;m back on the iPhone and I don&rsquo;t miss the Nexus much. I am glad for the experience though. When I work in Android now I have a much clearer idea of what users expect. iOS users and Android users should and do expect a different experience. The interaction is different so our applications should match those expected interactions. Google has done some amazing work in a very short amount of time. Apple has some work to do if they&rsquo;re going to remain competitive with Android.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -2239,6 +2275,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/10/10/fixing-a-commit-to-the-wrong-branch/">Fixing a Commit to the Wrong Branch</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/10/02/i-suck-at-git/">I Suck at Git</a>
       </li>
     
@@ -2252,10 +2292,6 @@
     
       <li class="post">
         <a href="/blog/2016/05/31/big-o-notation/">Big-O Notation</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/12/31/more-functional-please/">More Functional Please</a>
       </li>
     
   </ul>

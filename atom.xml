@@ -4,7 +4,7 @@
   <title><![CDATA[Sean Dougherty]]></title>
   <link href="http://steam.github.io/atom.xml" rel="self"/>
   <link href="http://steam.github.io/"/>
-  <updated>2016-10-03T09:16:35-06:00</updated>
+  <updated>2016-10-10T23:02:37-06:00</updated>
   <id>http://steam.github.io/</id>
   <author>
     <name><![CDATA[Sean Dougherty]]></name>
@@ -12,6 +12,85 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Fixing a Commit to the Wrong Branch]]></title>
+    <link href="http://steam.github.io/blog/2016/10/10/fixing-a-commit-to-the-wrong-branch/"/>
+    <updated>2016-10-10T22:16:00-06:00</updated>
+    <id>http://steam.github.io/blog/2016/10/10/fixing-a-commit-to-the-wrong-branch</id>
+    <content type="html"><![CDATA[<p>In my last post <a href="http://seancdougherty.com/blog/2016/10/02/i-suck-at-git/">&ldquo;I Suck at Git&rdquo;</a> I mentioned that I&rsquo;d post some other git-gotchas in the future. I love this workflow, courtesy of Colin, my goto for all things git.</p>
+
+<p>Have you ever made changes to files in an existing git project, committed them, and realized you intended to commit the changes to a different branch?</p>
+
+<h2>I have.</h2>
+
+<p>Here is the scenario. At Ello, we use a simple branching model. You&rsquo;re probably familar with it. <code>master</code> is kept clean, ideally only production ready code sees the light of <code>master</code>. When working on bug fixes or features we create topic or feature branches. A typical flow starts with a fresh pull from master.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git co master
+</span><span class='line'>git pull</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Followed by creating a feature branch.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git co -b sd/feature/make-america-great-again</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next, all the code that Makes America Great Again is written, the tests are written, they&rsquo;re submitted as a pull-request, reviewed, updated, and finally submitted for acceptance testing, approved and merged.</p>
+
+<p>This is the typical flow. It works great. Most of the time.</p>
+
+<p>But what if someone (finger pointed at myself) gets a little ahead of himself and forgets to create a topic/feature branch? What if they write some <em>tremendous</em> code and immediately commit it directly to master?</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git co master
+</span><span class='line'>git pull
+</span><span class='line'>... write some tremendous code
+</span><span class='line'>git add ... tremendous code
+</span><span class='line'>git commit -m "adds tremendous code"
+</span><span class='line'>... write more amazing code
+</span><span class='line'>git add ... amazing code
+</span><span class='line'>git commit -m "adds amazing code"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After realizing that there are two commits in master that I intended to commit to <code>sd/feature/make-america-great-again</code> I need to fix things. It turns out that the fix is pretty simple. There are several approaches to the problem but I really like this one.</p>
+
+<ol>
+<li>create a new branch</li>
+<li>checkout master</li>
+<li><code>git reset HEAD~</code> the requisite number of times</li>
+<li>move on with your life</li>
+</ol>
+
+
+<p>After executing the offending commits.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git co -b sd/feature/make-america-great-again
+</span><span class='line'>git co master
+</span><span class='line'>git reset HEAD~ // undoes the most recent commit, leaving the modified changes on disk
+</span><span class='line'>git reset HEAD~ // undoes the next commit, leaving the modified changes on disk
+</span><span class='line'>... do what you want, git stash is a reasonable idea
+</span><span class='line'>git co sd/feature/make-america-great-again // now you have the commits on the originally intended branch</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Crisis overted. Thats pretty much it. You&rsquo;re now in the position you inteded to be in the first place. Working on a feature branch, having commited a couple of changes. No harm, no foul.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[I Suck at Git]]></title>
