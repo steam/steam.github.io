@@ -4,7 +4,7 @@
   <title><![CDATA[Sean Dougherty]]></title>
   <link href="http://steam.github.io/atom.xml" rel="self"/>
   <link href="http://steam.github.io/"/>
-  <updated>2016-10-10T23:07:58-06:00</updated>
+  <updated>2018-09-14T16:15:46-06:00</updated>
   <id>http://steam.github.io/</id>
   <author>
     <name><![CDATA[Sean Dougherty]]></name>
@@ -12,6 +12,15 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Programmatic AutoLayout With SnapKit]]></title>
+    <link href="http://steam.github.io/blog/2016/10/13/programmatic-autolayout-with-snapkit/"/>
+    <updated>2016-10-13T21:52:00-06:00</updated>
+    <id>http://steam.github.io/blog/2016/10/13/programmatic-autolayout-with-snapkit</id>
+    <content type="html"><![CDATA[<p>When I built my first iOS app, I did all my layout in code. This was before AutoLayout was introduced in iOS 6. I&rsquo;d describe each <code>UIView's</code> position by assigning it&rsquo;s frame to a <code>CGRect</code> that specified the <code>x</code>, <code>y</code>, <code>width</code> and <code>height</code>. This approach worked reasonbally well for the single screen size available at the time 320px wide by 480px tall. As</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Fixing a Commit to the Wrong Branch]]></title>

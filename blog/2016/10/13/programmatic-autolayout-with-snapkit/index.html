@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title> - Sean Dougherty</title>
+  <title>Programmatic AutoLayout With SnapKit - Sean Dougherty</title>
   <meta name="author" content="Sean Dougherty">
 
   
-  <meta name="description" content="I am a mobile software engineer living in Denver Colorado. I spend my time writing code, mostly Swift, hanging out with my wife and 3 boys, injuring &hellip;">
+  <meta name="description" content="When I built my first iOS app, I did all my layout in code. This was before AutoLayout was introduced in iOS 6. I&rsquo;d describe each UIView's &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://steam.github.io">
+  <link rel="canonical" href="http://steam.github.io/blog/2016/10/13/programmatic-autolayout-with-snapkit">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Sean Dougherty" type="application/atom+xml">
@@ -70,66 +70,86 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title"></h1>
+    
+      <h1 class="entry-title">Programmatic AutoLayout With SnapKit</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-10-13T21:52:00-06:00" pubdate data-updated="true">Oct 13<span>th</span>, 2016</time>
+        
+      </p>
+    
   </header>
-  
-  <p>I am a mobile software engineer living in Denver Colorado. I spend my time writing code, mostly Swift, hanging out with my wife and 3 boys, injuring myself while running and coaching my kids&#8217; soccer teams.</p>
-
-<h3>Current</h3>
-
-<p>My current role is Principal Engineer at <a href="https://cirrusmd.com">CirrusMD</a>.</p>
-
-<h3>Products</h3>
-
-<p>Creating software has always been a creative outlet for me. I love learning new languages, technologies and approaches. I love learning from other programmers and teaching other programmers. But ultimately, my love of programming comes from creating something that people enjoy using. An application that people want to use, that solves a problem for them, makes their life easier, helps or entertains them. I&rsquo;m lucky I get to build products that matter to the people who use them.</p>
-
-<ul>
-<li><a href="https://ello.co">Ello</a></li>
-<li><a href="https://www.gospotcheck.com">GoSpotCheck</a></li>
-<li><a href="http://cirrusmd.com">CirrusMD</a></li>
-<li><a href="http://www.storyvine.com">Storyvine</a></li>
-<li><a href="http://www.snocru.com">SNOCRU</a></li>
-<li>Red Robin&rsquo;s <a href="https://itunes.apple.com/us/app/red-robin-customizer/id425269915?mt=8">Customizer</a></li>
-</ul>
 
 
-<p><a href="/products/">See a full list of products</a></p>
-
-<h3>Work History</h3>
-
-<p>Over the last 20 years I have charted a path from my background in fine arts to software engineering. I&rsquo;ve worked with dozens of companies on projects using many technologies along the way. My life as a programmer started with plain html in the late 1990s leading to ActionScript in the early 2000s to C#, Ruby, Objective-C and my current love, Swift. Since the early days of Swift development in the fall of 2014 I have been lucky to spend most of my time working in it.</p>
-
-<ul>
-<li><strong>CirrusMD</strong> &ndash; Principal Engineer 7/2017 &ndash; present</li>
-<li><strong>Ello</strong> &ndash; Mobile Lead 1/2015 &ndash; 7/2017</li>
-<li><strong>Ello</strong> &ndash; VP Engineering 10/2015 &ndash; 5/2016</li>
-<li><strong>GoSpotCheck</strong> &ndash; Principal Mobile Engineer 5/2014 &ndash; 9/2014</li>
-<li><strong>process255</strong> &ndash; Owner 10/2009 &ndash; 1/2015</li>
-<li><strong>Factory Design Labs</strong> &ndash; Sr. Diretor of Interactive Services 5/2009 &ndash; 10/2009</li>
-<li><strong>Factory Design Labs</strong> &ndash; User Interface Development Director 5/2008 &ndash; 5/2009</li>
-<li><strong>Factory Design Labs</strong> &ndash; Lead User Interface Developer 4/2007 &ndash; 5/2008</li>
-<li><strong>Xylem Interactive</strong> &ndash; Technical Manager 9/2005 &ndash; 4/2007</li>
-<li><strong>Xylem Interactive</strong> &ndash; Web Developer 10/2004 &ndash; 9/2005</li>
-<li><strong>Cramer</strong> &ndash; Sr. Designer 3/2003 &ndash; 10/2004</li>
-<li><strong>Kaminsky Strategik Design</strong> &ndash; Designer 11/2001 &ndash; 3/2003</li>
-</ul>
+<div class="entry-content"><p>When I built my first iOS app, I did all my layout in code. This was before AutoLayout was introduced in iOS 6. I&rsquo;d describe each <code>UIView's</code> position by assigning it&rsquo;s frame to a <code>CGRect</code> that specified the <code>x</code>, <code>y</code>, <code>width</code> and <code>height</code>. This approach worked reasonbally well for the single screen size available at the time 320px wide by 480px tall. As</p>
+</div>
 
 
-<p><a href="/work-history/">See full work history</a></p>
-
-<h3>Contact</h3>
-
-<p>You can reach me on twitter <a href="https://twitter.com/sdougherty">@sdougherty</a> or by email at <a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#x6f;&#58;&#115;&#x65;&#97;&#x6e;&#99;&#x64;&#111;&#117;&#103;&#x68;&#101;&#114;&#116;&#121;&#x40;&#x67;&#x6d;&#x61;&#x69;&#x6c;&#46;&#x63;&#x6f;&#109;">&#115;&#101;&#x61;&#110;&#x63;&#100;&#111;&#117;&#103;&#104;&#x65;&#114;&#x74;&#121;&#x40;&#x67;&#x6d;&#x61;&#105;&#x6c;&#46;&#x63;&#x6f;&#x6d;</a> and view OSS and work on github <a href="https://github.com/steam">steam</a>. <a href="/assets/Sean-Dougherty-Resume.pdf">View my resume as a pdf</a>.</p>
-
-  
-    <footer>
+  <footer>
+    <p class="meta">
       
-    </footer>
   
+
+<span class="byline author vcard">Posted by <span class="fn">Sean Dougherty</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-10-13T21:52:00-06:00" pubdate data-updated="true">Oct 13<span>th</span>, 2016</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/swift/'>Swift</a>, <a class='category' href='/blog/categories/ios/'>iOS,</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://steam.github.io/blog/2016/10/13/programmatic-autolayout-with-snapkit/" data-via="sdougherty" data-counturl="http://steam.github.io/blog/2016/10/13/programmatic-autolayout-with-snapkit/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/10/10/fixing-a-commit-to-the-wrong-branch/" title="Previous Post: Fixing a commit to the wrong branch">&laquo; Fixing a commit to the wrong branch</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
 </div>
 
   <aside class="sidebar">
